@@ -1,0 +1,27 @@
+{% extends "budgetsapp/budget_base.html" %}
+{% load bootstrap3 %}
+
+{% block group_content %}
+	
+	<div class="content">
+		{% if budget.pk != null  %}
+			<h4>Actualizar presupuesto</h4>
+		{% else %}
+			<h4>Crear un nuevo presupuesto</h4>
+		{% endif %}	
+
+		
+		<form method="POST">
+			{% csrf_token %}
+			{% bootstrap_form form %}
+
+			{% if budget.pk != null  %}
+				<input type="submit" class='btn btn-primary btn-large' value="Actualizar">
+			{% else %}
+				<input type="submit" class='btn btn-primary btn-large' value="Crear">
+			{% endif %}	
+			
+		</form>
+	</div>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "budgetsapp/budget_base.html" %}
+{% load bootstrap3 %}
+
+{% block pregroup %}
+  <div class="col">
+		<h1>{{ budget.name|title }}</h1>
+		<h5>{{ budget.description }}</h5>
+    <a href="{% url 'presupuesto:update' pk=budget.pk %}" class='btn btn-md btn-fill btn-warning'>Modificar</a>
+    <a href="{% url 'presupuesto:delete' pk=budget.pk %}" class='btn btn-md btn-fill btn-danger'>Eliminar</a>
+	</div>
+{% endblock %}
+
+{% block postgroup %}
+	
+	<div class="col order-1">
+		<div class="alert alert-success" role="alert">
+  			Ingresos: {{ ingresos }}
+		</div>
+		<div class="alert alert-danger" role="alert">
+  			Egresos: {{ egresos }}
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block footer %} 
+  <div class="container-fluid">
+    <table class="table table-striped order-list">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Titulo</th>
+          <th scope="col">Categoria</th>
+          <th scope="col">Monto</th>
+          <th scope="col">Gasto</th>
+          <th align="center">Edit</th>
+          <th align="center">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for expense in budget.expenses.all %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{expense.name}}</td>
+            <td>{{expense.category}}</td>
+            <td>{{expense.amount}}</td>
+            <td>
+              {% if expense.gasto == True %}
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" disabled="true" checked>
+                  <label class="form-check-label"></label>
+                </div>
+              {% else %}
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" disabled="true">
+                  <label class="form-check-label"></label>
+                </div>
+              {% endif %}
+            </td>
+            <td align="left">
+              <a href="{% url 'gastos:update_expense' pk=expense.pk %}">
+                <i class='fas fa-pencil-alt' alt="Editar"></i>
+              </a>
+            </td>
+            <td align="left">
+              <a href="{% url 'gastos:delete_expense' pk=expense.pk %}">
+                <i class='far fa-trash-alt' alt="Eliminar"></i>
+              </a>
+              
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a href="{% url 'presupuesto:create_expense' pk=budget.pk %}" class='btn btn-md btn-fill btn-primary'>
+          Crear nuevo gasto
+        </a>
+  </div>
+  
+{% endblock %}
+
