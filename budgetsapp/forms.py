@@ -9,6 +9,7 @@ class BudgetForm(forms.ModelForm):
         fields = ('name','description')
         
     def __init__(self,*args,**kwargs):
+        self.user = kwargs.pop('user')  # To get request.user. Do not use kwargs.pop('user', None) due to potential security hole
         super().__init__(*args, **kwargs)
         # Cristhian:
         # Label in the HTML
@@ -19,7 +20,8 @@ class BudgetForm(forms.ModelForm):
     def clean_name(self):
         data = self.cleaned_data['name']
         data = slugify(data)
-        listado = Budget.objects.filter(name__iexact=data)
+        #listado = Budget.objects.filter(name__iexact=data)
+        listado = Budget.objects.filter(name__iexact=data).filter(user__exact=self.user)
         print(data)
         print(listado)
         if len(listado) > 0:

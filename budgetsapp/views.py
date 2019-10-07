@@ -23,6 +23,11 @@ class CreateBudget(LoginRequiredMixin,generic.CreateView):
 	form_class = forms.BudgetForm
 	model = Budget
 
+	def get_form_kwargs(self):
+		kwargs = super().get_form_kwargs()
+		kwargs.update({'user': self.request.user})
+		return kwargs
+
 	def form_valid(self,form):
 		self.object = form.save(commit=False)
 		self.object.user = self.request.user

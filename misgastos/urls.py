@@ -29,5 +29,6 @@ urlpatterns = [
     path('thanks/',views.ThanksPage.as_view(),name='thanks'),
     path("presupuestos/", include("budgetsapp.urls", namespace="presupuesto")),
     path("gastos/", include("expensesapp.urls", namespace="gastos")),
+    path("categorias/", include("categoriesapp.urls", namespace="categorias")),
     #path("groups/",include("groupsapp.urls", namespace="groups")),
 ]

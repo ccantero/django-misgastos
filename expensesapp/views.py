@@ -24,10 +24,20 @@ class CreateExpense(LoginRequiredMixin,generic.CreateView):
 		self.object.save()
 		return super().form_valid(form)
 
+	def get_form_kwargs(self):
+		kwargs = super().get_form_kwargs()
+		kwargs.update({'user': self.request.user})
+		return kwargs
+
 class UpdateExpense(LoginRequiredMixin,generic.UpdateView):
 	form_class = forms.ExpenseForm
 	model = Expense		
 	exclude = ('budget',)
+
+	def get_form_kwargs(self):
+		kwargs = super().get_form_kwargs()
+		kwargs.update({'user': self.request.user})
+		return kwargs
 
 class DeleteExpense(LoginRequiredMixin,generic.DeleteView):
 	model = Expense

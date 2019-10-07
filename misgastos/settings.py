@@ -25,9 +25,15 @@ STATIC_DIR = os.path.join(BASE_DIR,'static')
 SECRET_KEY = 'i=5iz!5uit12_7id%4jl&5_ht!=+3o%$6d3u*a)nebwo^+!p_='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if os.environ['HOME'] != '/home/ccantero86':
+    DEBUG = True
+    ALLOWED_HOSTS = []
+else:
+    STATIC_ROOT = '/home/ccantero86/django-misgatos/static'
+    ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com',]
+    DEBUG = False
 
-ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -42,7 +48,8 @@ INSTALLED_APPS = [
     'bootstrap3',
     'accountsapp',
     'budgetsapp',
-    'expensesapp'
+    'categoriesapp',
+    'expensesapp',
 ]
 
 MIDDLEWARE = [
@@ -124,7 +131,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'), ]
+STATICFILES_DIRS = [STATIC_DIR, ]
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'thanks'

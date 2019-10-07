@@ -1,0 +1,15 @@
+{% extends "budgetsapp/budget_base.html" %}
+{% load bootstrap3 %}
+
+{% block content %}
+	<div class="col-md-6 order-md-1">
+		<h4>Crear una nueva categoria</h4>
+		<form method="POST">
+			{% csrf_token %}
+			{% bootstrap_form form %}
+			
+			<input type="submit" class='btn btn-primary btn-large' value="Crear">
+			<input type="hidden" name="next" value="{{ HTTP_REFERER }}">
+		</form>
+	</div>
+{% endblock %}

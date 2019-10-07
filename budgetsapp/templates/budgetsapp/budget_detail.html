@@ -13,13 +13,47 @@
 {% block postgroup %}
 	
 	<div class="col order-1">
-		<div class="alert alert-success" role="alert">
+		<div class="alert alert-success" id="ingresos" role="alert">
   			Ingresos: {{ ingresos }}
 		</div>
-		<div class="alert alert-danger" role="alert">
+		<div class="alert alert-danger" id="egresos" role="alert">
   			Egresos: {{ egresos }}
 		</div>
 	</div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+      var ingresos = {{ ingresos }};
+      var ingresos_string = ingresos.toString();
+      var i = 0;
+      var factor = ingresos / ingresos_string.length / 10 ;
+      refreshId_ingresos = setInterval(function(){ 
+        i = i + factor;
+        if(i < ingresos) {
+          $("#ingresos").html("Ingresos: " + i); 
+        }
+        else {
+          $("#ingresos").html("Ingresos: " + ingresos); 
+          clearInterval(refreshId_ingresos);
+        }
+      }, 1 * 10);
+
+      var egresos = {{ egresos }};
+      var egresos_string = egresos.toString();
+      var i = 0;
+      var factor_egresos = egresos / egresos_string.length / 10 ;
+      refreshId_egresos = setInterval(function(){ 
+        i = i + factor_egresos;
+        if(i < egresos) {
+          $("#egresos").html("Egresos: " + i); 
+        }
+        else {
+          $("#egresos").html("Egresos: " + egresos); 
+          clearInterval(refreshId_egresos);
+        }
+      }, 1 * 10)
+
+  </script>
 
 {% endblock %}
 
