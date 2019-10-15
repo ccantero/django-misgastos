@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class ExpenseForm(forms.ModelForm):
     class Meta:
         model = Expense
-        fields = ('name','category','amount','gasto')
+        fields = ('name','category','cantidad_total','cantidad_pendiente','amount','gasto')
         
     def __init__(self,*args,**kwargs):
         self.user = kwargs.pop('user')  # To get request.user. Do not use kwargs.pop('user', None) due to potential security hole
@@ -24,3 +24,16 @@ class ExpenseForm(forms.ModelForm):
                       user__in=[self.user.pk,admin_pk]
                   )
         )
+        querySet = Category.objects.filter(name="Impuestos")
+        if len(querySet) > 0: 
+            pk = querySet[0].pk
+            self.fields["category"].initial = pk
+       
+
+    def clean_cantidad_total(self):
+        data = self.cleaned_data['cantidad_total']
+        cantidad_pendiente = int(self.data['cantidad_pendiente'])
+        if cantidad_pendiente > data:
+            raise forms.ValidationError("Cantidad_pendiente no puede ser mayor a Cantidad Total")
+
+        return data

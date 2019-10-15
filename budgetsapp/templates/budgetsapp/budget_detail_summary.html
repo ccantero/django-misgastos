@@ -8,8 +8,8 @@
     <a href="{% url 'presupuesto:update' pk=budget.pk %}" class='btn btn-md btn-fill btn-warning'>Modificar</a>
     <a href="{% url 'presupuesto:delete' pk=budget.pk %}" class='btn btn-md btn-fill btn-danger'>Eliminar</a>
 	</div>
-  <div class="col my-auto">
-    <a href="{% url 'presupuestos:detail_summary' pk=budget.pk %}">
+    <div class="col my-auto">
+    <a href="{% url 'presupuestos:detail' pk=budget.pk %}">
       <input type="submit" class='btn btn-primary btn-large' value="{{ budget.name|title }}">  
     </a>
   </div>
@@ -18,21 +18,28 @@
 {% block postgroup %}
 	
 	<div class="col order-1">
-    <div class="alert alert-success" id="ingresos" role="alert">
-      Ingresos: {{ ingresos }}
-    </div>
-    <div class="alert alert-danger" id="egresos" role="alert">
-        Egresos: {{ egresos }}
+    {% if balance > 0 %}
+      <div class="alert alert-success" id="balance" role="alert">
+        Balance: {{ balance }}
+      </div>
+    {% else %}
+      <div class="alert alert-danger" id="balance" role="alert">
+        Balance: {{ balance }}
+      </div>
+    {% endif %}    
+    <div class="alert alert-info" id="daysleft" role="alert">
+        Dias Faltantes: {{ days_left }}
     </div>
 	</div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script>
+  {% if days_left == '' %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
         var ingresos = {{ ingresos }};
         var ingresos_string = ingresos.toString();
         var i = 0;
-        //var factor = ingresos / ingresos_string.length / 10 ;
-        var factor = 100;
+        var factor = ingresos / ingresos_string.length / 10 ;
         refreshId_ingresos = setInterval(function(){ 
           i = i + factor;
           if(i < ingresos) {
@@ -59,7 +66,8 @@
           }
         }, 1 * 10)
 
-  </script>
+    </script>
+  {% endif %}
 
 {% endblock %}
 
@@ -71,6 +79,7 @@
           <th scope="col">#</th>
           <th scope="col">Titulo</th>
           <th scope="col">Categoria</th>
+          <th scope="col">Cantidad</th>
           <th scope="col">Monto</th>
           <th scope="col">Gasto</th>
           <th align="center">Edit</th>
@@ -78,11 +87,12 @@
         </tr>
       </thead>
       <tbody>
-        {% for expense in budget.expenses.all %}
+        {% for expense in non_paid_expenses %}
             <tr>
               <th scope="row">{{ forloop.counter }}</th>
               <td>{{expense.name}}</td>
               <td>{{expense.category}}</td>
+              <td>{{expense.cantidad_pendiente}}</td>
               <td>{{expense.total_amount}}</td>
               <td>
                 {% if expense.gasto == True %}

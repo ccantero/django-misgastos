@@ -47,8 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap3',
     'accountsapp',
-    'budgetsapp',
     'categoriesapp',
+    'budgetsapp',
     'expensesapp',
 ]
 

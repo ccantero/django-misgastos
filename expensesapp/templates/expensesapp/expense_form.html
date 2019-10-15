@@ -9,7 +9,7 @@
 		{% else %}
 			<h4>Crear un nuevo gasto</h4>
 		{% endif %}	
-		<form method="POST">
+		<form method="POST" id="myForm">
 			{% csrf_token %}
 			{% bootstrap_form form %}
 			
@@ -21,8 +21,8 @@
 		</form>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="{% static 'misgastos/js/expense_form.js' %}" type="text/javascript" ></script>
 	<script>
     	var static_url = "{% url 'categorias:create' %}";
 	</script>
+	<script src="{% static 'misgastos/js/expense_form.js' %}" type="text/javascript" ></script>
 {% endblock %}

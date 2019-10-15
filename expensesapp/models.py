@@ -5,24 +5,32 @@ from django.urls import reverse
 from budgetsapp.models import Budget
 from categoriesapp.models import Category
 
+from django.db.utils import OperationalError
+
 class Expense(models.Model):
 
-	querySet = Category.objects.filter(name="Impuestos")
-	name = models.CharField(max_length=100)
-
-	if len(querySet) == 0:
-		category = models.ForeignKey(	Category,
+	category = models.ForeignKey(	Category,
 									related_name='categories',
 									on_delete=models.PROTECT)	
-	else:
-		category = models.ForeignKey(	Category,
-										default=querySet[0].pk, # PK for Caterogies
-										related_name='categories',
-										on_delete=models.PROTECT)
 
+	name = models.CharField(max_length=100)
 	amount = models.PositiveIntegerField()
+	cantidad_total = models.PositiveIntegerField(default=1)
+	cantidad_pendiente = models.PositiveIntegerField(default=1)
 	gasto = models.BooleanField(default=True)
 	budget = models.ForeignKey(Budget,related_name='expenses',on_delete=models.PROTECT)
+
+	@property
+	def total_amount(self):
+		return self.amount * self.cantidad_total
+
+	@property
+	def pending_amount(self):
+		return self.amount * self.cantidad_pendiente
+
+	@property
+	def is_paid(self):
+		return self.cantidad_pendiente > 0
 
 	def __str__(self):
 		return self.name

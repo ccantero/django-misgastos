@@ -13,4 +13,6 @@ window.onload = function() {
 	//$("#id_category").before("<div class='row'><div class='col'><h1 id='_myid_'>Heading 1</h1></div><div class='col-md-1'><img src='/static/admin/img/icon-addlink.svg' alt='Add'></div></div>");
 	$("#_myid_").replaceWith(my_var);
 
+	// Clear the form
+	$('#myForm').get(0).reset(); //clear form data on page load
 }

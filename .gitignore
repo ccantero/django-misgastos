@@ -1,4 +1,7 @@
 # Added by Cristhian
+accountsapp/migrations/*.py
+budgetsapp/migrations/*.py
+categoriesapp/migrations/*.py
 expensesapp/migrations/*.py
 
 

@@ -12,4 +12,5 @@ urlpatterns = [
 	path('update/<int:pk>/',views.UpdateBudget.as_view(),name='update'),
 	path('delete/<int:pk>/',views.DeleteBudget.as_view(),name='delete'),
 	path('<int:pk>/',views.BudgetDetail.as_view(),name='detail'),
+	path('<int:pk>/summary/',views.BudgetDetailTiny.as_view(),name='detail_summary'),
 ]

@@ -30,6 +30,9 @@
 						<h3 class='title list-group-item-heading'>{{budget.name|title}}</h3>
 					</a>
 					<p>{{ budget.description }}</p>
+					{% if budget.expired_date != None %}
+						<p>{{ budget.expired_date|date:"d M Y" }}</p>
+					{% endif %}
 				</div>
 			{% endfor %}
 		</div>	
