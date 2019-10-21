@@ -29,6 +29,14 @@ class CreateExpense(LoginRequiredMixin,generic.CreateView):
 		kwargs.update({'user': self.request.user})
 		return kwargs
 
+	def get_context_data(self, **kwargs):
+	 	context = super().get_context_data(**kwargs)
+	 	common_expenses = Expense.objects.all()
+	 	context['common_expenses'] = common_expenses
+
+	 	return context
+
+
 class UpdateExpense(LoginRequiredMixin,generic.UpdateView):
 	form_class = forms.ExpenseForm
 	model = Expense		

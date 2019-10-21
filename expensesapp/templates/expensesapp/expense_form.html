@@ -3,26 +3,95 @@
 {% load staticfiles %}
 
 {% block content %}
-	<div class="col-md-6 order-md-1">
-		{% if expense.pk != null  %}
-			<h4>Actualizar gasto</h4>
-		{% else %}
-			<h4>Crear un nuevo gasto</h4>
-		{% endif %}	
-		<form method="POST" id="myForm">
-			{% csrf_token %}
-			{% bootstrap_form form %}
-			
-			{% if expense.pk != null  %}
-				<input type="submit" class='btn btn-primary btn-large' value="Actualizar">
-			{% else %}
-				<input type="submit" class='btn btn-primary btn-large' value="Crear">
-			{% endif %}	
-		</form>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6 order-md-1">
+				{% if expense.pk != null  %}
+					<h4>Actualizar gasto</h4>
+				{% else %}
+					<h4>Crear un nuevo gasto</h4>
+				{% endif %}	
+				<form method="POST" id="myForm">
+					{% csrf_token %}
+					{% bootstrap_form form %}
+					
+					{% if expense.pk != null  %}
+						<input type="submit" class='btn btn-primary btn-large' value="Actualizar">
+					{% else %}
+						<input type="submit" class='btn btn-primary btn-large' value="Crear">
+					{% endif %}	
+				</form>
+			</div>
+
+			<div class="col order-1">
+				<div class="container col-6">
+					<h4>Gastos más comunes</h4>
+					<br>
+					<div class="list-group">
+						{% for expense in common_expenses %}
+							<div class="list-group-item list-group-item-action d-flex w-100 justify-content-between">
+						    	<h5 class="mb-1">{{ expense.name }}</h5>
+						    </div> 
+							<!-- <a href="#" class="list-group-item list-group-item-action">
+						    	<div class="d-flex w-100 justify-content-between">
+						      		<h5 class="mb-1">{{ expense.name }}</h5>
+						    	</div>
+						 	</a> -->
+						    <br>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script>
     	var static_url = "{% url 'categorias:create' %}";
+    	var dict = {};
+    	{% for expense in common_expenses %}
+    		name = "{{expense.name}}";
+    		category = "{{expense.category.name}}";
+    		dict[name] = category;
+    	{% endfor %}
+
+    	function clean(){
+    		$('.list-group-item').each(function( index ) {
+	  			if( $( this )[0].classList.contains('active') ) {
+	  				$( this ).removeClass('active');
+	  			}
+	  			$('#id_name').val("");
+			});
+    	}
+
+
+    	$('.list-group-item').on('click', function() {
+    		if( $( this )[0].classList.contains('active') ) {
+    			$( this ).removeClass('active');
+    			var $children = $(this).children('h5');
+			    $('#id_name').val("");
+    		}
+    		else {
+	    		clean();
+			    var $this = $(this);
+			    var $children = $this.children('h5');
+			    $this.toggleClass('active')
+			    $('#id_name').val($children.text());
+			    //$('#id_category')
+			    $('#id_category > option').each( function ()  {
+			    	if ( $(this).text() == dict[$children.text()] ) {
+			    		value = $(this).val();
+			    		$('#id_category').val(value);
+			    	}
+			    });
+			    //console.log(dict[$children.text()])
+    		}
+		});
+
+		$('#id_name').on('click', function myFunction() {
+		  clean();
+		  //var x = $(this).val();
+		  //console.log("You wrote: " + x);
+		});
 	</script>
 	<script src="{% static 'misgastos/js/expense_form.js' %}" type="text/javascript" ></script>
 {% endblock %}

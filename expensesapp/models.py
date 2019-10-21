@@ -18,7 +18,7 @@ class Expense(models.Model):
 	cantidad_total = models.PositiveIntegerField(default=1)
 	cantidad_pendiente = models.PositiveIntegerField(default=1)
 	gasto = models.BooleanField(default=True)
-	budget = models.ForeignKey(Budget,related_name='expenses',on_delete=models.PROTECT)
+	budget = models.ForeignKey(Budget,related_name='expenses',null=True, blank=True,on_delete=models.PROTECT)
 
 	@property
 	def total_amount(self):

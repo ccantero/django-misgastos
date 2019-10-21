@@ -13,10 +13,10 @@
 			<h4>Crear un nuevo presupuesto</h4>
 		{% endif %}	
 
-		
 		<form method="POST">
 			{% csrf_token %}
-			{% bootstrap_form form %}
+			{% bootstrap_form form %}			
+
 			{% if budget.pk != null  %}
 				<input type="submit" class='btn btn-primary btn-large' value="Actualizar">
 			{% else %}
