@@ -26,15 +26,14 @@ SECRET_KEY = 'i=5iz!5uit12_7id%4jl&5_ht!=+3o%$6d3u*a)nebwo^+!p_='
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.environ['HOME'] != '/home/ccantero86':
-    print("1")
     DEBUG = True
     ALLOWED_HOSTS = []
 else:
-    print("2")
     #STATIC_ROOT = '/home/ccantero86/django-misgatos/static'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     DEBUG = False
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com','mis-presupuestos.herokuapp.com']
 
 
