@@ -31,7 +31,7 @@ if os.environ['HOME'] != '/home/ccantero86':
 else:
     #STATIC_ROOT = '/home/ccantero86/django-misgatos/static'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com',]
+    ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com','mis-presupuestos.herokuapp.com']
     DEBUG = False
 
 
