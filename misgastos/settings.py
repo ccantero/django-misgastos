@@ -29,7 +29,7 @@ if os.environ['HOME'] != '/home/ccantero86':
     DEBUG = True
     ALLOWED_HOSTS = []
 else:
-    STATIC_ROOT = '/home/ccantero86/django-misgatos/static'
+    #STATIC_ROOT = '/home/ccantero86/django-misgatos/static'
     ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com',]
     DEBUG = False
 
