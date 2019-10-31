@@ -25,15 +25,14 @@ STATIC_DIR = os.path.join(BASE_DIR,'static')
 SECRET_KEY = 'i=5iz!5uit12_7id%4jl&5_ht!=+3o%$6d3u*a)nebwo^+!p_='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.environ['HOME'] != '/home/ccantero86':
+
+if os.environ['HOME'] == '/home/cristhian':
     DEBUG = True
     ALLOWED_HOSTS = []
-elif os.environ['HOME'] != '/home/cristhian':
-    print("2")
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    ALLOWED_HOSTS = []
+if os.environ['HOME'] == '/home/ccantero86':
+    DEBUG = True
+    ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com','mis-presupuestos.herokuapp.com']    
 else:
-    print("3")
     #STATIC_ROOT = '/home/ccantero86/django-misgatos/static'
     ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com','mis-presupuestos.herokuapp.com']    
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
