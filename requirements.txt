@@ -2,3 +2,4 @@ gunicorn
 Django
 django-bootstrap3
 django-heroku
+whitenoise

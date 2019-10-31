@@ -28,13 +28,18 @@ SECRET_KEY = 'i=5iz!5uit12_7id%4jl&5_ht!=+3o%$6d3u*a)nebwo^+!p_='
 if os.environ['HOME'] != '/home/ccantero86':
     DEBUG = True
     ALLOWED_HOSTS = []
+elif os.environ['HOME'] != '/home/cristhian':
+    print("2")
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    ALLOWED_HOSTS = []
 else:
+    print("3")
     #STATIC_ROOT = '/home/ccantero86/django-misgatos/static'
+    ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com','mis-presupuestos.herokuapp.com']    
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     DEBUG = False
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com','mis-presupuestos.herokuapp.com']
+
 
 
 
@@ -62,6 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # For Heroku
 ]
 
 ROOT_URLCONF = 'misgastos.urls'
@@ -134,6 +140,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR, ]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' # For Heroku
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'thanks'
