@@ -28,15 +28,18 @@ SECRET_KEY = 'i=5iz!5uit12_7id%4jl&5_ht!=+3o%$6d3u*a)nebwo^+!p_='
 
 if os.environ['HOME'] == '/home/cristhian':
     DEBUG = True
-    ALLOWED_HOSTS = []
-if os.environ['HOME'] == '/home/ccantero86':
+    ALLOWED_HOSTS = ['127.0.0.1']
+    STATIC_ROOT = '/home/ccantero86/django-misgatos/static'
+elif os.environ['HOME'] == '/home/ccantero86':
+    print("2")
     ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com']    
     DEBUG = False
 else:
+    print("3")
     #STATIC_ROOT = '/home/ccantero86/django-misgatos/static'
+    DEBUG = True
     ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com','mis-presupuestos.herokuapp.com']    
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    DEBUG = True
 
 
 
