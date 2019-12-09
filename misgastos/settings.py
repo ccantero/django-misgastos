@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-import django_heroku
+
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -41,11 +41,6 @@ else:
     DEBUG = True
     ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com','mis-presupuestos.herokuapp.com']    
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-
-# Activate Django-Heroku.
-django_heroku.settings(locals())
-
 
 # Application definition
 
@@ -149,3 +144,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' 
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'thanks'
+
+import django_heroku
+# Activate Django-Heroku.
+django_heroku.settings(locals())
