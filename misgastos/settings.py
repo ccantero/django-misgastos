@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+import dj_database_url
+import dotenv
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -26,19 +28,13 @@ SECRET_KEY = 'i=5iz!5uit12_7id%4jl&5_ht!=+3o%$6d3u*a)nebwo^+!p_='
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-if os.environ['HOME'] == '/home/cristhian':
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
     DEBUG = True
     ALLOWED_HOSTS = ['127.0.0.1']
     STATIC_ROOT = '/home/ccantero86/django-misgatos/static'
-elif os.environ['HOME'] == '/home/ccantero86':
-    print("2")
-    DEBUG = True
-    ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com']    
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    dotenv.load_dotenv(dotenv_file)
 else:
-    print("3")
-    #STATIC_ROOT = '/home/ccantero86/django-misgatos/static'
-    DEBUG = True
     ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com','mis-presupuestos.herokuapp.com']    
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
@@ -93,12 +89,8 @@ WSGI_APPLICATION = 'misgastos.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
 # Password validation
@@ -148,3 +140,7 @@ LOGOUT_REDIRECT_URL = 'thanks'
 import django_heroku
 # Activate Django-Heroku.
 django_heroku.settings(locals())
+
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    del DATABASES['default']['OPTIONS']['sslmode']
