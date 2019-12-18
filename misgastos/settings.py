@@ -37,7 +37,8 @@ if os.path.isfile(dotenv_file):
 else:
     #DEBUG = True
     ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com','mis-presupuestos.herokuapp.com']    
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Application definition
 
