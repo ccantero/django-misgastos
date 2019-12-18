@@ -187,3 +187,4 @@ DEBUG_PROPAGATE_EXCEPTIONS = True
 print("STATIC_URL = " + STATIC_URL)
 print("STATIC_DIR = " + STATIC_DIR)
 print("STATIC_ROOT = " + STATIC_ROOT)
+print("static(misgastos/css/master.css) = " + static('misgastos/css/master.css'))
