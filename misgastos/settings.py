@@ -128,6 +128,14 @@ USE_L10N = True
 USE_TZ = True
 
 
+import django_heroku
+# Activate Django-Heroku.
+django_heroku.settings(locals())
+
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    del DATABASES['default']['OPTIONS']['sslmode']
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -140,13 +148,6 @@ COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'thanks'
 
-import django_heroku
-# Activate Django-Heroku.
-django_heroku.settings(locals())
-
-dotenv_file = os.path.join(BASE_DIR, ".env")
-if os.path.isfile(dotenv_file):
-    del DATABASES['default']['OPTIONS']['sslmode']
 
 LOGGING = {
     'version': 1,
