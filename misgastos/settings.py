@@ -35,7 +35,7 @@ if os.path.isfile(dotenv_file):
     STATIC_ROOT = '/home/ccantero86/django-misgatos/static'
     dotenv.load_dotenv(dotenv_file)
 else:
-    #DEBUG = True
+    DEBUG = True
     ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com','mis-presupuestos.herokuapp.com']    
     STATIC_ROOT =  os.path.join(BASE_DIR, 'static')
     #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
