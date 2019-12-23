@@ -142,7 +142,7 @@ if os.path.isfile(dotenv_file):
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR, ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' # For Heroku
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' # For Heroku
 COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
 
 LOGIN_REDIRECT_URL = 'home'
@@ -184,7 +184,9 @@ LOGGING = {
 
 DEBUG_PROPAGATE_EXCEPTIONS = True
 
+from django.conf.urls.static import static
+
 print("STATIC_URL = " + STATIC_URL)
 print("STATIC_DIR = " + STATIC_DIR)
 print("STATIC_ROOT = " + STATIC_ROOT)
-print("static(misgastos/css/master.css) = " + static('misgastos/css/master.css'))
+print("static(misgastos/css/master.css) = " + str(static('misgastos/css/master.css')))
