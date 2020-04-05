@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'categoriesapp',
     'budgetsapp',
     'expensesapp',
+    'coffeeApp'
 ]
 
 MIDDLEWARE = [
@@ -183,10 +184,3 @@ LOGGING = {
 }
 
 DEBUG_PROPAGATE_EXCEPTIONS = True
-
-from django.conf.urls.static import static
-
-print("STATIC_URL = " + STATIC_URL)
-print("STATIC_DIR = " + STATIC_DIR)
-print("STATIC_ROOT = " + STATIC_ROOT)
-print("static(misgastos/css/master.css) = " + str(static('misgastos/css/master.css')))
