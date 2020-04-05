@@ -4,7 +4,7 @@ from django.db import models
 
 class Coffee(models.Model):
 	coffeeName = models.CharField(max_length=100)
-	coffeeDescription = models.CharField(blank=True,default='',max_length=255)
+	coffeeDescription = models.TextField(blank=True,default='')
 	coffeeIntensity = models.PositiveIntegerField(default=1)
 	isRistretto = models.BooleanField(default=False)
 	isEspresso = models.BooleanField(default=False)
