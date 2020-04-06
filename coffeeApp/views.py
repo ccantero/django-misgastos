@@ -29,14 +29,14 @@ class CoffeeDetail(generic.DetailView):
 
 	def get_queryset(self):
 		queryset = super().get_queryset()
-		return queryset.filter(pk__iexact=self.kwargs.get('pk'))
+		return queryset.filter(pk__exact=self.kwargs.get('pk'))
 
 class CoffeeDetailJSON(generic.DetailView):
 	model = Coffee
 
 	def render_to_response(self, context, **response_kwargs):
 		queryset = super().get_queryset()
-		mydata = queryset.filter(pk__iexact=self.kwargs.get('pk')).values()
+		mydata = queryset.filter(pk__exact=self.kwargs.get('pk')).values()
 		lista = list(mydata)
 		myCoffee = lista[0]
 		return JsonResponse(myCoffee, **response_kwargs, safe=False)
