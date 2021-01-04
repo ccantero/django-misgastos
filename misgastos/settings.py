@@ -40,9 +40,6 @@ else:
     STATIC_ROOT =  os.path.join(BASE_DIR, 'static')
     #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-if os.environ['CC_DEBUG'] == 'True':
-    DEBUG = True
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -187,3 +184,6 @@ LOGGING = {
 }
 
 DEBUG_PROPAGATE_EXCEPTIONS = True
+
+if os.environ['CC_DEBUG'] == 'True':
+    DEBUG = True
