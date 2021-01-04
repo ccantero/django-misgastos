@@ -185,5 +185,8 @@ LOGGING = {
 
 DEBUG_PROPAGATE_EXCEPTIONS = True
 
-if os.environ['CC_DEBUG'] == 'True':
-    DEBUG = True
+try:
+    if os.environ['CC_DEBUG'] == 'True':
+        DEBUG = True
+except KeyError:
+    print("Nothing to do.")

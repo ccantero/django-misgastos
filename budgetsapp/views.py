@@ -16,6 +16,7 @@ class ListBudget(LoginRequiredMixin,generic.ListView):
 	model = Budget
 
 	def get_queryset(self):
+		print("CCANTERO - get_queryset ListBudget")
 		queryset = super().get_queryset()
 		return queryset.filter(user__username__iexact=self.request.user).order_by('name')
 
