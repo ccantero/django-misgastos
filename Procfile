@@ -1,1 +1,1 @@
-web: gunicorn misgastos.wsgi
+web: gunicorn app_name:misgastos --log-file -
