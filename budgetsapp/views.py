@@ -16,11 +16,10 @@ class ListBudget(LoginRequiredMixin,generic.ListView):
 	model = Budget
 
 	def get_queryset(self):
-		print("CCANTERO - get_queryset ListBudget - 1")
 		queryset = super().get_queryset()
-		print("CCANTERO - get_queryset ListBudget - 1" + str(self.request.user))
-		print(type(queryset.filter(user__username__iexact=self.request.user)))
-		return queryset.filter(user__username__iexact=self.request.user).order_by('name')
+		# Fix for django.db.utils.ProgrammingError: can't adapt type 'SimpleLazyObject'
+		myuser = str(self.request.user)
+		return queryset.filter(user__username__iexact=myuser).order_by('name')
 
 class CreateBudget(LoginRequiredMixin,generic.CreateView):
 	form_class = forms.BudgetForm
