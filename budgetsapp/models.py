@@ -8,7 +8,7 @@ User = get_user_model()
 
 class Budget(models.Model):
 	name = models.CharField(max_length=100)
-	slug = models.SlugField(allow_unicode=True,unique=True)
+	slug = models.SlugField(allow_unicode=True)
 	description = models.CharField(blank=True,default='',max_length=255)
 	user = models.ForeignKey(User,related_name='budgets',on_delete=models.PROTECT)
 	expired_date = models.DateField(blank=True,null=True)

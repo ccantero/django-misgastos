@@ -95,7 +95,7 @@ class BudgetDetail(LoginRequiredMixin, generic.DetailView):
 
 	def get_queryset(self):
 		queryset = super().get_queryset()
-		return queryset.filter(pk__iexact=self.kwargs.get('pk'))
+		return queryset.filter(pk__exact=self.kwargs.get('pk'))
 
 	def get_context_data(self, **kwargs):
 	 	context = super().get_context_data(**kwargs)
@@ -129,7 +129,7 @@ class BudgetDetailTiny(LoginRequiredMixin, generic.DetailView):
 
 	def get_queryset(self):
 		queryset = super().get_queryset()
-		return queryset.filter(pk__iexact=self.kwargs.get('pk'))
+		return queryset.filter(pk__exact=self.kwargs.get('pk'))
 
 	def get_context_data(self, **kwargs):
 	 	context = super().get_context_data(**kwargs)
