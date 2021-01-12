@@ -14,7 +14,7 @@ class Expense(models.Model):
 									on_delete=models.PROTECT)	
 
 	name = models.CharField(max_length=100)
-	amount = models.PositiveIntegerField()
+	amount = models.FloatField()
 	cantidad_total = models.PositiveIntegerField(default=1)
 	cantidad_pendiente = models.PositiveIntegerField(default=1)
 	gasto = models.BooleanField(default=True)

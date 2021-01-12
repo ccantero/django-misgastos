@@ -21,6 +21,8 @@ class CreateExpense(LoginRequiredMixin,generic.CreateView):
 		self.object = form.save(commit=False)
 		self.object.user = self.request.user
 		self.object.budget = Budget.objects.get(pk=self.kwargs.get('pk'))
+
+		self.object.amount = round(self.object.amount, 2)
 		self.object.save()
 		return super().form_valid(form)
 
