@@ -24,10 +24,11 @@ class ExpenseForm(forms.ModelForm):
                       user__in=[self.user.pk,admin_pk]
                   )
         )
-        querySet = Category.objects.filter(name="Impuestos")
-        if len(querySet) > 0: 
-            pk = querySet[0].pk
-            self.fields["category"].initial = pk
+        
+        #querySet = Category.objects.filter(name="Impuestos")
+        #if len(querySet) > 0: 
+        #    pk = querySet[0].pk
+        #    self.fields["category"].initial = pk
        
 
     def clean_cantidad_total(self):

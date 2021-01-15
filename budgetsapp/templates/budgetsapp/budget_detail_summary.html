@@ -20,11 +20,11 @@
 	<div class="col order-1">
     {% if balance > 0 %}
       <div class="alert alert-success" id="balance" role="alert">
-        Balance: {{ balance }}
+        Balance ( Disponible para gastar por día ): {{ balance }}      
       </div>
     {% else %}
       <div class="alert alert-danger" id="balance" role="alert">
-        Balance: {{ balance }}
+        Balance ( Faltante por día ) : {{ balance }}      
       </div>
     {% endif %}    
     <div class="alert alert-info" id="daysleft" role="alert">
@@ -123,7 +123,7 @@
       </tbody>
     </table>
     <a href="{% url 'presupuesto:create_expense' pk=budget.pk %}" class='btn btn-md btn-fill btn-primary'>
-          Crear nuevo gasto
+          Crear nuevo ingreso / gasto
         </a>
   </div>
   
