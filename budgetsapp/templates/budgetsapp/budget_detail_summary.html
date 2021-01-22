@@ -82,6 +82,7 @@
           <th scope="col">Cantidad</th>
           <th scope="col">Monto</th>
           <th scope="col">Gasto</th>
+          <th scope="col">Tarjeta Credito</th>
           <th align="center">Edit</th>
           <th align="center">Delete</th>
         </tr>
@@ -96,6 +97,19 @@
               <td>{{expense.total_amount}}</td>
               <td>
                 {% if expense.gasto == True %}
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" disabled="true" checked>
+                    <label class="form-check-label"></label>
+                  </div>
+                {% else %}
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" disabled="true">
+                    <label class="form-check-label"></label>
+                  </div>
+                {% endif %}
+              </td>
+              <td>
+                {% if expense.tarjeta_credito == True %}
                   <div class="form-check">
                     <input type="checkbox" class="form-check-input" disabled="true" checked>
                     <label class="form-check-label"></label>

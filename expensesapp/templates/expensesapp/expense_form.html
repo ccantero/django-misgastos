@@ -64,10 +64,19 @@
 	  			$('#id_name').val("");
 			});
 
-
-
-
     	}
+
+    	$("#id_tarjeta_credito").change(function() {
+		    if(this.checked) {
+		        $("#id_gasto")[0].checked = true
+		    }
+		});
+
+		$("#id_gasto").change(function() {
+		    if(!this.checked) {
+		        $("#id_tarjeta_credito")[0].checked = false
+		    }
+		});
 
 
     	$('.list-group-item').on('click', function() {

@@ -102,14 +102,21 @@ class BudgetDetail(LoginRequiredMixin, generic.DetailView):
 	 	expenses = Expense.objects.filter(budget=self.kwargs.get('pk'))
 	 	ingresos = 0
 	 	egresos = 0
+	 	tarjeta_credito = 0
 	 	for expense in expenses:
 	 		if expense.gasto == True:
-	 			egresos += expense.amount
+	 			if expense.tarjeta_credito == False:
+	 				egresos += expense.amount
+	 			else:
+	 				tarjeta_credito += expense.amount
+	 			# Falta el else y agregar los gastos de Tarjeta de credito
 	 		else:
 	 			ingresos += expense.amount
 
 	 	context['egresos'] = egresos
 	 	context['ingresos'] = ingresos
+	 	context['tarjeta_credito'] = tarjeta_credito
+
 	 	if self.object.expired_date != None:
 	 		fecha = self.object.expired_date - timezone.now().date()
 	 		balance = ingresos - egresos
@@ -136,10 +143,15 @@ class BudgetDetailTiny(LoginRequiredMixin, generic.DetailView):
 	 	expenses = Expense.objects.filter(budget=self.kwargs.get('pk'))
 	 	ingresos = 0
 	 	egresos = 0
+	 	tarjeta_credito = 0
 	 	non_paid_expenses = Expense.objects.filter(budget=self.kwargs.get('pk')).filter(cantidad_pendiente__gt=0)
 	 	for expense in expenses:
 	 		if expense.gasto == True:
-	 			egresos += expense.amount
+	 			if expense.tarjeta_credito == False:
+	 				egresos += expense.amount
+	 			else:
+	 				tarjeta_credito += expense.amount
+	 			# Falta el else y agregar los gastos de Tarjeta de credito
 	 		else:
 	 			ingresos += expense.amount
 

@@ -18,6 +18,7 @@ class Expense(models.Model):
 	cantidad_total = models.PositiveIntegerField(default=1)
 	cantidad_pendiente = models.PositiveIntegerField(default=1)
 	gasto = models.BooleanField(default=True)
+	tarjeta_credito = models.BooleanField(default=False)
 	budget = models.ForeignKey(Budget,related_name='expenses',null=True, blank=True,on_delete=models.PROTECT)
 
 	@property
