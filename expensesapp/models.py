@@ -16,7 +16,7 @@ class Expense(models.Model):
 	name = models.CharField(max_length=100)
 	amount = models.FloatField()
 	cantidad_total = models.PositiveIntegerField(default=1)
-	cantidad_pendiente = models.PositiveIntegerField(default=1)
+	cantidad_pendiente = models.PositiveIntegerField(default=0)
 	gasto = models.BooleanField(default=True)
 	tarjeta_credito = models.BooleanField(default=False)
 	budget = models.ForeignKey(Budget,related_name='expenses',null=True, blank=True,on_delete=models.PROTECT)
@@ -32,6 +32,10 @@ class Expense(models.Model):
 	@property
 	def is_paid(self):
 		return self.cantidad_pendiente > 0
+
+	@property
+	def get_amount(self):
+		return self.total_amount - self.pending_amount
 
 	def __str__(self):
 		return self.name

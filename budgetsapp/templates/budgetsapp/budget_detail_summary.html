@@ -26,7 +26,10 @@
       <div class="alert alert-danger" id="balance" role="alert">
         Balance ( Faltante por día ) : {{ balance }}      
       </div>
-    {% endif %}    
+    {% endif %}
+    <div class="alert alert-danger" id="balance" role="alert">
+        Gastos Pendientes : {{ egresos_pendientes }}      
+      </div>
     <div class="alert alert-info" id="daysleft" role="alert">
         Dias Faltantes: {{ days_left }}
     </div>
@@ -94,7 +97,7 @@
               <td>{{expense.name}}</td>
               <td>{{expense.category}}</td>
               <td>{{expense.cantidad_pendiente}}</td>
-              <td>{{expense.total_amount}}</td>
+              <td>{{expense.pending_amount}}</td>
               <td>
                 {% if expense.gasto == True %}
                   <div class="form-check">
