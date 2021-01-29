@@ -94,6 +94,7 @@
           <th scope="col">Monto</th>
           <th scope="col">Gasto</th>
           <th scope="col">Tarjeta Credito</th>
+          <th align="center">Pagado</th>
           <th align="center">Edit</th>
           <th align="center">Delete</th>
         </tr>
@@ -131,6 +132,18 @@
                   </div>
                 {% endif %}
               </td>
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-secondary">
+                    {% if expense.is_paid == True %}
+                      <input type="radio" name="options" id="option_{{ forloop.counter }}" autocomplete="off" checked> Pagado
+                    {% else %}
+                      <input type="radio" name="options" id="option_{{ forloop.counter }}" autocomplete="off" checked> Pendiente
+                    {% endif %}
+                  </label>
+                </div>
+              </td>
+
               <td align="left">
                 <a href="{% url 'gastos:update_expense' pk=expense.pk %}">
                   <i class='fas fa-pencil-alt' alt="Editar"></i>
@@ -146,10 +159,24 @@
         {% endfor %}
       </tbody>
     </table>
+
+    <script>
+        $(".btn-secondary").on('click', function(event) {
+          
+          if( $(this).hasClass("active") ){
+            $(this).removeClass("active")
+            console.log("Removed class")  
+          }
+          else{
+            $(this).addClass("active")
+            console.log("Added class")
+          }
+          event.preventDefault()
+        });
+    </script>
     <a href="{% url 'presupuesto:create_expense' pk=budget.pk %}" class='btn btn-md btn-fill btn-primary'>
           Crear nuevo ingreso / gasto
         </a>
   </div>
-  
 {% endblock %}
 

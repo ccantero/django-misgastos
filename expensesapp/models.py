@@ -31,7 +31,7 @@ class Expense(models.Model):
 
 	@property
 	def is_paid(self):
-		return self.cantidad_pendiente > 0
+		return self.cantidad_pendiente == 0
 
 	@property
 	def get_amount(self):
