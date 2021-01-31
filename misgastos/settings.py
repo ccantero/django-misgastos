@@ -141,7 +141,8 @@ if os.path.isfile(dotenv_file):
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR, ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' # For Heroku
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' # For Heroku
+STATICFILES_STORAGE = 'misgastos.storage.WhiteNoiseStaticFilesStorage'
 COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
 
 LOGIN_REDIRECT_URL = 'home'
