@@ -38,6 +38,9 @@ else:
     ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com','mis-presupuestos.herokuapp.com']    
     STATIC_ROOT =  os.path.join(BASE_DIR, 'static')
 
+
+DEBUG = os.getenv('DEBUG_HEROKU', False)
+
 # Application definition
 
 INSTALLED_APPS = [
