@@ -32,12 +32,10 @@ dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
     DEBUG = True
     ALLOWED_HOSTS = ['127.0.0.1']
-    STATIC_ROOT = '/home/ccantero86/django-misgatos/static'
+    #STATIC_ROOT = '/home/ccantero86/django-misgatos/static'
     dotenv.load_dotenv(dotenv_file)
 else:
     ALLOWED_HOSTS = ['ccantero86.pythonanywhere.com','mis-presupuestos.herokuapp.com']    
-    STATIC_ROOT =  os.path.join(BASE_DIR, 'static')
-
 
 DEBUG = os.getenv('DEBUG_HEROKU', False)
 
@@ -143,9 +141,10 @@ if os.path.isfile(dotenv_file):
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR, ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' # For Heroku
-#STATICFILES_STORAGE = 'misgastos.storage.WhiteNoiseStaticFilesStorage'
 COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
 
 LOGIN_REDIRECT_URL = 'home'
