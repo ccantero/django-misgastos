@@ -121,7 +121,10 @@ class BudgetDetail(LoginRequiredMixin, generic.DetailView):
 	 		balance = ingresos - egresos
 	 		context['days_left'] = fecha.days
 	 		if balance > 0:
-	 			context['balance'] = round(balance / fecha.days,2)
+	 			if fecha.days > 0:
+	 				context['balance'] = round(balance / fecha.days,2)
+	 			else:
+	 				context['balance'] = round(balance,2)
 	 		else:
 	 			context['balance'] = 0
 	 	else:
@@ -162,7 +165,10 @@ class BudgetDetailTiny(LoginRequiredMixin, generic.DetailView):
 	 		balance = ingresos - egresos - egresos_pendientes
 	 		context['days_left'] = fecha.days
 	 		if balance > 0:
-	 			context['balance'] = round(balance / fecha.days,2)
+	 			if fecha.days > 0:
+	 				context['balance'] = round(balance / fecha.days,2)
+	 			else:
+	 				context['balance'] = round(balance,2)
 	 		else:
 	 			context['balance'] = 0
 	 	else:

@@ -132,7 +132,7 @@
                   </div>
                 {% endif %}
               </td>
-              <td>
+<!--               <td>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                   <label class="btn btn-secondary">
                     {% if expense.is_paid == True %}
@@ -142,8 +142,16 @@
                     {% endif %}
                   </label>
                 </div>
+              </td> -->
+              <td>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    {% if expense.is_paid == True %}
+                      <button type="button" class="btn btn-success btn-custom-class">Pagado</button> 
+                    {% else %}
+                      <button type="button" class="btn btn-danger btn-custom-class">Pendiente</button>
+                    {% endif %}
+                </div>
               </td>
-
               <td align="left">
                 <a href="{% url 'gastos:update_expense' pk=expense.pk %}">
                   <i class='fas fa-pencil-alt' alt="Editar"></i>
@@ -161,14 +169,18 @@
     </table>
 
     <script>
-        $(".btn-secondary").on('click', function(event) {
+        $(".btn-custom-class").on('click', function(event) {
           
-          if( $(this).hasClass("active") ){
-            $(this).removeClass("active")
+          if( $(this).hasClass("btn-success") ){
+            $(this).removeClass("btn-success")
+            $(this).addClass("btn-danger")
+            $(this).text("Pendiente")
             console.log("Removed class")  
           }
           else{
-            $(this).addClass("active")
+            $(this).removeClass("btn-danger")
+            $(this).addClass("btn-success")
+            $(this).text("Pagado")
             console.log("Added class")
           }
           event.preventDefault()
