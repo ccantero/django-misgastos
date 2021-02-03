@@ -48,7 +48,8 @@ class CreateBudget(LoginRequiredMixin,generic.CreateView):
 
 		# For copy Expenses from another Budget
 		choice = int(form.data['budget_choice'])
-		k, previous_budget_name = BUDGETS_CHOICES[choice]
+		k, previous_budget = BUDGETS_CHOICES[choice]
+		previous_budget_name = previous_budget.name
 		listado_expenses = Expense.objects.filter(budget__name__iexact=previous_budget_name)
 		for expense in listado_expenses:
 			new_expense = Expense()
@@ -56,8 +57,9 @@ class CreateBudget(LoginRequiredMixin,generic.CreateView):
 			new_expense.name = expense.name
 			new_expense.amount = expense.amount
 			new_expense.cantidad_total = expense.cantidad_total
-			new_expense.cantidad_pendiente = expense.cantidad_pendiente
+			new_expense.cantidad_pendiente = expense.cantidad_total
 			new_expense.gasto = expense.gasto
+			new_expense.tarjeta_credito = expense.tarjeta_credito
 			new_expense.budget = self.object
 			new_expense.save()
 
@@ -83,7 +85,7 @@ class DeleteBudget(LoginRequiredMixin,generic.DeleteView):
 
 	def delete(self,*args,**kwargs):
 		messages.success(self.request,'Budget Deleted')
-		budgets = Budget.objects.filter(pk__iexact=self.kwargs.get('pk')).order_by('name')
+		budgets = Budget.objects.filter(pk__exact=self.kwargs.get('pk')).order_by('name')
 		if len(budgets) > 0:
 			for expense in budgets[0].expenses.all():
 				expense.delete()
