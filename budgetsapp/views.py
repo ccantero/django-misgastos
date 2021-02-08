@@ -114,8 +114,8 @@ class BudgetDetail(LoginRequiredMixin, generic.DetailView):
 	 		else:
 	 			ingresos += expense.amount
 
-	 	context['egresos'] = egresos
-	 	context['ingresos'] = ingresos
+	 	context['egresos'] = round(egresos,2)
+	 	context['ingresos'] = round(ingresos,2)
 	 	context['tarjeta_credito'] = tarjeta_credito
 
 	 	if self.object.expired_date != None:

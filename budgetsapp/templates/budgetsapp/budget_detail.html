@@ -148,7 +148,7 @@
                     {% if expense.is_paid == True %}
                       <button type="button" class="btn btn-success btn-custom-class">Pagado</button> 
                     {% else %}
-                      <button type="button" class="btn btn-danger btn-custom-class">Pendiente</button>
+                      <button type="button" class="btn btn-danger btn-custom-class">Pendiente ( {{expense.cantidad_pendiente }})</button>
                     {% endif %}
                 </div>
               </td>
@@ -168,24 +168,38 @@
       </tbody>
     </table>
 
-    <script>
+<!--     <script>
         $(".btn-custom-class").on('click', function(event) {
           
-          if( $(this).hasClass("btn-success") ){
-            $(this).removeClass("btn-success")
-            $(this).addClass("btn-danger")
-            $(this).text("Pendiente")
-            console.log("Removed class")  
-          }
-          else{
+          //if( $(this).hasClass("btn-success") ){
+            
+            //$(this).removeClass("btn-success")
+            //$(this).addClass("btn-danger")
+            //$(this).text("Pendiente")
+            //console.log("Removed class")  
+          //}
+          if( $(this).hasClass("btn-danger") ){
+            
+            $.ajax({
+              url: "{% url 'gastos:validate_username'%}",               //url: '/ajax/validate_username/',
+              data: {
+                'username': 'test'
+              },
+              dataType: 'json',
+              success: function (data) {
+                if (data.is_taken) {
+                  alert("A user with this username already exists.");
+                }
+              }
+            });
+
             $(this).removeClass("btn-danger")
             $(this).addClass("btn-success")
             $(this).text("Pagado")
-            console.log("Added class")
           }
           event.preventDefault()
         });
-    </script>
+    </script> -->
     <a href="{% url 'presupuesto:create_expense' pk=budget.pk %}" class='btn btn-md btn-fill btn-primary'>
           Crear nuevo ingreso / gasto
         </a>

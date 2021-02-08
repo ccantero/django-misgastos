@@ -11,6 +11,8 @@ from expensesapp import forms
 from expensesapp.models import Expense
 from budgetsapp.models import Budget
 
+from django.http import JsonResponse
+
 
 # Create your views here.
 class CreateExpense(LoginRequiredMixin,generic.CreateView):
@@ -61,3 +63,10 @@ class DeleteExpense(LoginRequiredMixin,generic.DeleteView):
 	def delete(self,*args,**kwargs):
 		messages.success(self.request,'Post Deleted')
 		return super().delete(*args,**kwargs)
+
+
+def update_expense(request):
+    data = {
+        'is_taken': True
+    }
+    return JsonResponse(data)
