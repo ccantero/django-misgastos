@@ -64,8 +64,10 @@ class DeleteExpense(LoginRequiredMixin,generic.DeleteView):
 		messages.success(self.request,'Post Deleted')
 		return super().delete(*args,**kwargs)
 
+import time
 
 def update_expense(request):
+    time. sleep(5) 
     data = {
         'is_taken': True
     }

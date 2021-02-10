@@ -160,8 +160,8 @@ class BudgetDetailTiny(LoginRequiredMixin, generic.DetailView):
 	 		else:
 	 			ingresos += expense.get_amount
 
-	 	context['egresos'] = egresos
-	 	context['ingresos'] = ingresos
+	 	context['egresos'] = round(egresos, 2)
+	 	context['ingresos'] = round(ingresos, 2)
 	 	if self.object.expired_date != None:
 	 		fecha = self.object.expired_date - timezone.now().date()
 	 		balance = ingresos - egresos - egresos_pendientes
@@ -176,7 +176,7 @@ class BudgetDetailTiny(LoginRequiredMixin, generic.DetailView):
 	 	else:
 	 		context['days_left'] = ""
 
-	 	context['non_paid_expenses'] = non_paid_expenses
-	 	context['egresos_pendientes'] = egresos_pendientes
+	 	context['non_paid_expenses'] = round(non_paid_expenses,2)
+	 	context['egresos_pendientes'] = round(egresos_pendientes, 2)
 
 	 	return context

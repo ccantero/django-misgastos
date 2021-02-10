@@ -168,38 +168,59 @@
       </tbody>
     </table>
 
-<!--     <script>
-        $(".btn-custom-class").on('click', function(event) {
+  <script>
+        // $(".btn-custom-class").on('click', function(event) {
           
-          //if( $(this).hasClass("btn-success") ){
+        //     //$(this).removeClass("btn-success")
+        //     //$(this).addClass("btn-danger")
+        //     //$(this).text("Pendiente")
+        //     //console.log("Removed class")  
+        //   //}
+        //   if( $(this).hasClass("btn-danger") ){
             
-            //$(this).removeClass("btn-success")
-            //$(this).addClass("btn-danger")
-            //$(this).text("Pendiente")
-            //console.log("Removed class")  
-          //}
-          if( $(this).hasClass("btn-danger") ){
-            
-            $.ajax({
-              url: "{% url 'gastos:validate_username'%}",               //url: '/ajax/validate_username/',
-              data: {
-                'username': 'test'
-              },
-              dataType: 'json',
-              success: function (data) {
-                if (data.is_taken) {
-                  alert("A user with this username already exists.");
-                }
-              }
-            });
+        //     var previous_text = $(this).text()
 
-            $(this).removeClass("btn-danger")
-            $(this).addClass("btn-success")
-            $(this).text("Pagado")
-          }
-          event.preventDefault()
-        });
-    </script> -->
+        //     $(this).attr('disabled', true)
+        //     $(this).text("In progress...")
+
+        //     $(this).animate({
+        //       opacity: '0.5',
+        //     });
+
+        //     if( $(this).hasClass("btn-danger") ){
+              
+        //       var _self_ = $(this)
+        //       $.ajax({
+        //         url: "{% url 'gastos:validate_username'%}",               //url: '/ajax/validate_username/',
+        //         data: {
+        //           'username': 'test'
+        //         },
+        //         dataType: 'json',
+        //         success: function (data) {
+        //           if (data.is_taken) {
+        //             alert("A user with this username already exists.");
+        //           }
+
+        //           $(_self_).text(previous_text)
+        //           $(_self_).attr('disabled', false)
+
+        //           $(_self_).animate({
+        //             opacity: '1',
+        //           });
+        //         }
+        //       });
+
+        //       //$(this).removeClass("btn-danger")
+        //       //$(this).addClass("btn-success")
+        //       //$(this).text("Pagado")
+        //     }
+
+        //   }
+
+        //     event.preventDefault()
+        // });
+
+    </script>
     <a href="{% url 'presupuesto:create_expense' pk=budget.pk %}" class='btn btn-md btn-fill btn-primary'>
           Crear nuevo ingreso / gasto
         </a>
