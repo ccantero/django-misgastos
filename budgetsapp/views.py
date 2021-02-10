@@ -176,7 +176,7 @@ class BudgetDetailTiny(LoginRequiredMixin, generic.DetailView):
 	 	else:
 	 		context['days_left'] = ""
 
-	 	context['non_paid_expenses'] = round(non_paid_expenses,2)
+	 	context['non_paid_expenses'] = non_paid_expenses
 	 	context['egresos_pendientes'] = round(egresos_pendientes, 2)
 
 	 	return context
