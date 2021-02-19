@@ -65,10 +65,25 @@ class DeleteExpense(LoginRequiredMixin,generic.DeleteView):
 		return super().delete(*args,**kwargs)
 
 import time
+from django.http import HttpResponseForbidden
 
-def update_expense(request):
-    time. sleep(5) 
-    data = {
-        'is_taken': True
-    }
-    return JsonResponse(data)
+def pay_expense(request):
+	if not request.user.is_authenticated:
+		return HttpResponseForbidden()
+
+	myid = request.POST['myid']
+	if myid == -1:
+		data = {
+			'ajax_answer': False
+		}
+	else:
+		currentExpense = Expense.objects.get(pk=myid)
+		currentExpense.cantidad_pendiente -= 1
+		currentExpense.save()
+
+		data = {
+				'ajax_answer': True,
+				'cantidad_pendiente': currentExpense.cantidad_pendiente
+		}
+
+	return JsonResponse(data)

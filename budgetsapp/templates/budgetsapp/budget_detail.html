@@ -31,6 +31,7 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script>
+      function updateCounters(){
         var ingresos = {{ ingresos }};
         var ingresos_string = ingresos.toString();
         var i = 0;
@@ -78,6 +79,8 @@
             clearInterval(refreshId_egresos_tc);
           }
         }, 1 * 50)
+      }
+      updateCounters()
 
   </script>
 
@@ -101,7 +104,7 @@
       </thead>
       <tbody>
         {% for expense in budget.expenses.all %}
-            <tr>
+            <tr id={{ expense.pk }} >
               <th scope="row">{{ forloop.counter }}</th>
               <td>{{expense.name}}</td>
               <td>{{expense.category}}</td>
@@ -132,21 +135,12 @@
                   </div>
                 {% endif %}
               </td>
-<!--               <td>
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-secondary">
-                    {% if expense.is_paid == True %}
-                      <input type="radio" name="options" id="option_{{ forloop.counter }}" autocomplete="off" checked> Pagado
-                    {% else %}
-                      <input type="radio" name="options" id="option_{{ forloop.counter }}" autocomplete="off" checked> Pendiente
-                    {% endif %}
-                  </label>
-                </div>
-              </td> -->
               <td>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    {% if expense.is_paid == True %}
-                      <button type="button" class="btn btn-success btn-custom-class">Pagado</button> 
+                    {% if expense.gasto != True %}
+                      <button type="button" class="btn btn-primary btn-custom-class" disabled="true">Ingreso</button> 
+                    {% elif expense.is_paid == True %}
+                      <button type="button" class="btn btn-success btn-custom-class" disabled="true">Pagado</button> 
                     {% else %}
                       <button type="button" class="btn btn-danger btn-custom-class">Pendiente ( {{expense.cantidad_pendiente }})</button>
                     {% endif %}
@@ -169,56 +163,80 @@
     </table>
 
   <script>
-        // $(".btn-custom-class").on('click', function(event) {
+        $(".btn-custom-class").on('click', function(event) {
           
-        //     //$(this).removeClass("btn-success")
-        //     //$(this).addClass("btn-danger")
-        //     //$(this).text("Pendiente")
-        //     //console.log("Removed class")  
-        //   //}
-        //   if( $(this).hasClass("btn-danger") ){
+            //$(this).removeClass("btn-success")
+            //$(this).addClass("btn-danger")
+            //$(this).text("Pendiente")
+            //console.log("Removed class")  
+          //}
+          if( $(this).hasClass("btn-danger") ){
             
-        //     var previous_text = $(this).text()
+            var previous_text = $(this).text()
 
-        //     $(this).attr('disabled', true)
-        //     $(this).text("In progress...")
+            $(this).attr('disabled', true)
+            $(this).text("In progress...")
 
-        //     $(this).animate({
-        //       opacity: '0.5',
-        //     });
+            var myid = $(this).closest('tr').attr('id')
 
-        //     if( $(this).hasClass("btn-danger") ){
+            $(this).animate({
+              opacity: '0.5',
+            });
+
+            if( $(this).hasClass("btn-danger") ){
               
-        //       var _self_ = $(this)
-        //       $.ajax({
-        //         url: "{% url 'gastos:validate_username'%}",               //url: '/ajax/validate_username/',
-        //         data: {
-        //           'username': 'test'
-        //         },
-        //         dataType: 'json',
-        //         success: function (data) {
-        //           if (data.is_taken) {
-        //             alert("A user with this username already exists.");
-        //           }
+              var _self_ = $(this)
+              $.ajax({
+                type:"POST",
+                url: "{% url 'gastos:pay_expense'%}",               //url: '/ajax/validate_username/',
+                data: {
+                  csrfmiddlewaretoken: "{{ csrf_token }}", 
+                  'myid': myid
+                },
+                dataType: 'json',
+                success: function (data) {
+                  if (data.ajax_answer) {
+                    if ( data.cantidad_pendiente == '0') {
+                      $(_self_).removeClass("btn-danger")
+                      $(_self_).addClass("btn-success")
+                      $(_self_).text("Pagado")
+                    }
+                    else
+                    {
+                      $(_self_).text("Pendiente ( " + data.cantidad_pendiente + " )") 
+                    }
 
-        //           $(_self_).text(previous_text)
-        //           $(_self_).attr('disabled', false)
+                    $(_self_).animate({
+                      opacity: '1',
+                    });
+                  }
+                  else {
+                    alert('Unable to update.')
+                    $(_self_).text(previous_text)
+                  }
+                  
+                  $(_self_).animate({
+                      opacity: '1',
+                    });
+                    
+                $(_self_).attr('disabled', false)
+                },
+                error: function (request, status, error) {
+                      window.location.href = "{% url 'accountsapp:login' %}"
+                  }
 
-        //           $(_self_).animate({
-        //             opacity: '1',
-        //           });
-        //         }
-        //       });
+              });
 
-        //       //$(this).removeClass("btn-danger")
-        //       //$(this).addClass("btn-success")
-        //       //$(this).text("Pagado")
-        //     }
 
-        //   }
+              //$(this).removeClass("btn-danger")
+              //$(this).addClass("btn-success")
+              //$(this).text("Pagado")
+            }
 
-        //     event.preventDefault()
-        // });
+          }
+
+            event.preventDefault()
+        });
 
     </script>
     <a href="{% url 'presupuesto:create_expense' pk=budget.pk %}" class='btn btn-md btn-fill btn-primary'>
