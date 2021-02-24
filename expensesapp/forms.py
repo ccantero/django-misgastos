@@ -22,7 +22,7 @@ class ExpenseForm(forms.ModelForm):
         self.fields["category"].queryset = (
                      Category.objects.filter(
                       user__in=[self.user.pk,admin_pk]
-                  )
+                  ).order_by('name')
         )
         
         #querySet = Category.objects.filter(name="Impuestos")

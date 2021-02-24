@@ -13,6 +13,7 @@ from budgetsapp.models import Budget
 
 from django.http import JsonResponse
 
+from django.db.models import Count
 
 # Create your views here.
 class CreateExpense(LoginRequiredMixin,generic.CreateView):
@@ -35,8 +36,20 @@ class CreateExpense(LoginRequiredMixin,generic.CreateView):
 
 	def get_context_data(self, **kwargs):
 	 	context = super().get_context_data(**kwargs)
-	 	common_expenses = Expense.objects.all()
-	 	context['common_expenses'] = common_expenses
+	 	all_expenses = Expense.objects.all()
+	 	most_common_expenses = Expense.objects.values('name').annotate(number_of_entries=Count('name')).order_by('-number_of_entries')[:5]
+	 	#most_common_expenses = Expense.objects.annotate(number_of_entries=Count('name')).order_by('number_of_entries')
+
+	 	common_expenses = []
+
+	 	for common_expense in most_common_expenses:
+	 		for expense in all_expenses:
+	 			if expense.name == common_expense['name']:
+	 				common_expenses.append(expense)
+	 				break
+	 	
+
+	 	context['common_expenses'] = common_expenses[:5]
 
 	 	return context
 

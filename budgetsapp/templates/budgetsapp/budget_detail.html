@@ -204,14 +204,16 @@
                     else
                     {
                       $(_self_).text("Pendiente ( " + data.cantidad_pendiente + " )") 
+                      $(_self_).attr('disabled', false)
+                      $(_self_).animate({
+                        opacity: '1',
+                      });
                     }
 
-                    $(_self_).animate({
-                      opacity: '1',
-                    });
                   }
                   else {
                     alert('Unable to update.')
+                    $(_self_).attr('disabled', false)
                     $(_self_).text(previous_text)
                   }
                   
@@ -219,7 +221,6 @@
                       opacity: '1',
                     });
                     
-                $(_self_).attr('disabled', false)
                 },
                 error: function (request, status, error) {
                       window.location.href = "{% url 'accountsapp:login' %}"
