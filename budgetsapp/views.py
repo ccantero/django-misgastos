@@ -48,6 +48,9 @@ class CreateBudget(LoginRequiredMixin,generic.CreateView):
 
 		# For copy Expenses from another Budget
 		choice = int(form.data['budget_choice'])
+		if choice == 0:
+			return super().form_valid(form)
+
 		k, previous_budget = BUDGETS_CHOICES[choice]
 		previous_budget_name = previous_budget.name
 		listado_expenses = Expense.objects.filter(budget__name__iexact=previous_budget_name)
