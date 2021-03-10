@@ -33,7 +33,7 @@ class CreateCategory(LoginRequiredMixin,generic.CreateView):
 		http_path = self.request.path
 		next = self.request.POST.get('next', '/')
 
-		if len(querySet) > 0: 
+		if len(querySet) > 0:
 			form.add_error("name", 'No se pudo')
 			return super().form_invalid(form)	
 
