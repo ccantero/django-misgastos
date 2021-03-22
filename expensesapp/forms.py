@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class ExpenseForm(forms.ModelForm):
     class Meta:
         model = Expense
-        fields = ('name','category','cantidad_total','cantidad_pendiente','amount','gasto', 'tarjeta_credito')
+        fields = ('name','category','cantidad_total','cantidad_pendiente','amount','gasto', 'tarjeta_credito', 'skip')
         
     def __init__(self,*args,**kwargs):
         self.user = kwargs.pop('user')  # To get request.user. Do not use kwargs.pop('user', None) due to potential security hole

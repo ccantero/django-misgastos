@@ -141,6 +141,8 @@
                       <button type="button" class="btn btn-primary btn-custom-class" disabled="true">Ingreso</button> 
                     {% elif expense.is_paid == True %}
                       <button type="button" class="btn btn-success btn-custom-class" disabled="true">Pagado</button> 
+                    {% elif expense.is_credit_card == True %}
+                      
                     {% else %}
                       <button type="button" class="btn btn-danger btn-custom-class">Pendiente ( {{expense.cantidad_pendiente }})</button>
                     {% endif %}

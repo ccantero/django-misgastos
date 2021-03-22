@@ -20,14 +20,15 @@ class Expense(models.Model):
 	gasto = models.BooleanField(default=True)
 	tarjeta_credito = models.BooleanField(default=False)
 	budget = models.ForeignKey(Budget,related_name='expenses',null=True, blank=True,on_delete=models.PROTECT)
+	skip = models.BooleanField(default=False)
 
 	@property
 	def total_amount(self):
-		return self.amount * self.cantidad_total
+		return round(self.amount * self.cantidad_total, 2)
 
 	@property
 	def pending_amount(self):
-		return self.amount * self.cantidad_pendiente
+		return round(self.amount * self.cantidad_pendiente,2)
 
 	@property
 	def is_paid(self):
@@ -36,6 +37,10 @@ class Expense(models.Model):
 	@property
 	def get_amount(self):
 		return self.total_amount - self.pending_amount
+
+	@property
+	def is_credit_card(self):
+		return self.tarjeta_credito
 
 	def __str__(self):
 		return self.name

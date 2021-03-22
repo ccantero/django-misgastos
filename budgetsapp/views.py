@@ -63,6 +63,7 @@ class CreateBudget(LoginRequiredMixin,generic.CreateView):
 			new_expense.cantidad_pendiente = expense.cantidad_total
 			new_expense.gasto = expense.gasto
 			new_expense.tarjeta_credito = expense.tarjeta_credito
+			new_expense.skip = False
 			new_expense.budget = self.object
 			new_expense.save()
 
@@ -119,7 +120,7 @@ class BudgetDetail(LoginRequiredMixin, generic.DetailView):
 
 	 	context['egresos'] = round(egresos,2)
 	 	context['ingresos'] = round(ingresos,2)
-	 	context['tarjeta_credito'] = tarjeta_credito
+	 	context['tarjeta_credito'] = round(tarjeta_credito,2)
 
 	 	if self.object.expired_date != None:
 	 		fecha = self.object.expired_date - timezone.now().date()
