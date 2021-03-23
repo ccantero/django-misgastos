@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from expensesapp import forms
 from expensesapp.models import Expense
@@ -14,6 +14,8 @@ from budgetsapp.models import Budget
 from django.http import JsonResponse
 
 from django.db.models import Count
+
+from django.core.exceptions import PermissionDenied
 
 # Create your views here.
 class CreateExpense(LoginRequiredMixin,generic.CreateView):
@@ -59,20 +61,40 @@ class CreateExpense(LoginRequiredMixin,generic.CreateView):
 	 	return context
 
 
-class UpdateExpense(LoginRequiredMixin,generic.UpdateView):
+class UpdateExpense(LoginRequiredMixin,UserPassesTestMixin,generic.UpdateView):
 	form_class = forms.ExpenseForm
 	model = Expense		
 	exclude = ('budget',)
+
+	def test_func(self):
+		expenses = Expense.objects.filter(pk__exact=self.kwargs.get('pk'))
+		if len(expenses) == 1:
+			myexpense = expenses[0]
+
+			if myexpense.budget.user.username == self.request.user.username:
+				return True
+
+		raise PermissionDenied("You are not authenticated to edit this.")
 
 	def get_form_kwargs(self):
 		kwargs = super().get_form_kwargs()
 		kwargs.update({'user': self.request.user})
 		return kwargs
 
-class DeleteExpense(LoginRequiredMixin,generic.DeleteView):
+class DeleteExpense(LoginRequiredMixin,UserPassesTestMixin,generic.DeleteView):
 	model = Expense
 	#select_related = ('user','group')
 	success_url = reverse_lazy('home')
+
+	def test_func(self):
+		expenses = Expense.objects.filter(pk__exact=self.kwargs.get('pk'))
+		if len(expenses) == 1:
+			myexpense = expenses[0]
+
+			if myexpense.budget.user.username == self.request.user.username:
+				return True
+
+		raise PermissionDenied("You are not authenticated to edit this.")
 
 	def get_queryset(self):
 		queryset = super().get_queryset()
@@ -96,6 +118,10 @@ def pay_expense(request):
 		}
 	else:
 		currentExpense = Expense.objects.get(pk=myid)
+
+		if currentExpense.budget.user.username != request.user.username:
+			return HttpResponseForbidden()
+
 		currentExpense.cantidad_pendiente -= 1
 		currentExpense.save()
 

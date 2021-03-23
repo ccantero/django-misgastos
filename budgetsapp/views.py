@@ -5,12 +5,14 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils import timezone
 
 from budgetsapp import forms
 from budgetsapp.models import Budget
 from expensesapp.models import Expense
+
+from django.core.exceptions import PermissionDenied
 
 class ListBudget(LoginRequiredMixin,generic.ListView):
 	model = Budget
@@ -69,19 +71,39 @@ class CreateBudget(LoginRequiredMixin,generic.CreateView):
 
 		return super().form_valid(form)
 
-class UpdateBudget(LoginRequiredMixin,generic.UpdateView):
+class UpdateBudget(LoginRequiredMixin,UserPassesTestMixin,generic.UpdateView):
 	form_class = forms.BudgetForm
 	model = Budget
+
+	def test_func(self):
+		budgets = Budget.objects.filter(pk__exact=self.kwargs.get('pk'))
+		if len(budgets) == 1:
+			mybudget = budgets[0]
+			
+			if mybudget.user.username == self.request.user.username:
+				return True
+
+		raise PermissionDenied("You are not authenticated to edit this.")
 
 	def get_form_kwargs(self):
 		kwargs = super().get_form_kwargs()
 		kwargs.update({'user': self.request.user})
 		return kwargs
 
-class DeleteBudget(LoginRequiredMixin,generic.DeleteView):
+class DeleteBudget(LoginRequiredMixin,UserPassesTestMixin,generic.DeleteView):
 	model = Budget
 	success_url = reverse_lazy('presupuestos:all')
 	#select_related = ('user','group')
+
+	def test_func(self):
+		budgets = Budget.objects.filter(pk__exact=self.kwargs.get('pk'))
+		if len(budgets) == 1:
+			mybudget = budgets[0]
+			
+			if mybudget.user.username == self.request.user.username:
+				return True
+
+		raise PermissionDenied("You are not authenticated to edit this.")
 
 	def get_queryset(self):
 		queryset = super().get_queryset()
@@ -96,8 +118,18 @@ class DeleteBudget(LoginRequiredMixin,generic.DeleteView):
 
 		return super().delete(*args,**kwargs)
 
-class BudgetDetail(LoginRequiredMixin, generic.DetailView):
+class BudgetDetail(LoginRequiredMixin, UserPassesTestMixin, generic.DetailView):
 	model = Budget
+
+	def test_func(self):
+		budgets = Budget.objects.filter(pk__exact=self.kwargs.get('pk'))
+		if len(budgets) == 1:
+			mybudget = budgets[0]
+			
+			if mybudget.user.username == self.request.user.username:
+				return True
+
+		raise PermissionDenied("You are not authenticated to edit this.")
 
 	def get_queryset(self):
 		queryset = super().get_queryset()
@@ -138,9 +170,19 @@ class BudgetDetail(LoginRequiredMixin, generic.DetailView):
 
 	 	return context
 
-class BudgetDetailTiny(LoginRequiredMixin, generic.DetailView):
+class BudgetDetailTiny(LoginRequiredMixin, UserPassesTestMixin, generic.DetailView):
 	model = Budget
 	template_name = 'budgetsapp/budget_detail_summary.html'
+
+	def test_func(self):
+		budgets = Budget.objects.filter(pk__exact=self.kwargs.get('pk'))
+		if len(budgets) == 1:
+			mybudget = budgets[0]
+			
+			if mybudget.user.username == self.request.user.username:
+				return True
+
+		raise PermissionDenied("You are not authenticated to edit this.")
 
 	def get_queryset(self):
 		queryset = super().get_queryset()

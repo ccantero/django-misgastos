@@ -5,6 +5,6 @@ from . import models
 # Register your models here.
 
 class BudgetAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'user')
+    list_display = ('pk','name', 'description', 'user')
 
 admin.site.register(models.Budget, BudgetAdmin)
