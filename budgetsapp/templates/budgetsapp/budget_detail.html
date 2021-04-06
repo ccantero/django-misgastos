@@ -5,8 +5,8 @@
   <div class="col">
 		<h1>{{ budget.name|title }}</h1>
 		<h5>{{ budget.description }}</h5>
-    <a href="{% url 'presupuesto:update' pk=budget.pk %}" class='btn btn-md btn-fill btn-warning'>Modificar</a>
-    <a href="{% url 'presupuesto:delete' pk=budget.pk %}" class='btn btn-md btn-fill btn-danger'>Eliminar</a>
+    <a href="{% url 'presupuestos:update' pk=budget.pk %}" class='btn btn-md btn-fill btn-warning'>Modificar</a>
+    <a href="{% url 'presupuestos:delete' pk=budget.pk %}" class='btn btn-md btn-fill btn-danger'>Eliminar</a>
 	</div>
   <div class="col my-auto">
     <a href="{% url 'presupuestos:detail_summary' pk=budget.pk %}">
@@ -137,7 +137,9 @@
               </td>
               <td>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    {% if expense.gasto != True %}
+                    {% if expense.skip %}
+                      <button type="button" class="btn btn-info btn-custom-class" disabled="true">Skipped</button> 
+                    {% elif expense.gasto != True %}
                       <button type="button" class="btn btn-primary btn-custom-class" disabled="true">Ingreso</button> 
                     {% elif expense.is_paid == True %}
                       <button type="button" class="btn btn-success btn-custom-class" disabled="true">Pagado</button> 
@@ -242,7 +244,7 @@
         });
 
     </script>
-    <a href="{% url 'presupuesto:create_expense' pk=budget.pk %}" class='btn btn-md btn-fill btn-primary'>
+    <a href="{% url 'presupuestos:create_expense' pk=budget.pk %}" class='btn btn-md btn-fill btn-primary'>
           Crear nuevo ingreso / gasto
         </a>
   </div>

@@ -79,7 +79,7 @@ class UpdateBudget(LoginRequiredMixin,UserPassesTestMixin,generic.UpdateView):
 		budgets = Budget.objects.filter(pk__exact=self.kwargs.get('pk'))
 		if len(budgets) == 1:
 			mybudget = budgets[0]
-			
+
 			if mybudget.user.username == self.request.user.username:
 				return True
 
@@ -142,9 +142,12 @@ class BudgetDetail(LoginRequiredMixin, UserPassesTestMixin, generic.DetailView):
 	 	egresos = 0
 	 	tarjeta_credito = 0
 	 	for expense in expenses:
+	 		if expense.skip:
+	 			continue
+
 	 		if expense.gasto == True:
 	 			if expense.tarjeta_credito == False:
-	 				egresos += expense.amount
+	 				egresos += expense.pending_amount
 	 			else:
 	 				tarjeta_credito += expense.amount
 	 		else:
@@ -195,8 +198,11 @@ class BudgetDetailTiny(LoginRequiredMixin, UserPassesTestMixin, generic.DetailVi
 	 	egresos = 0
 	 	tarjeta_credito = 0
 	 	egresos_pendientes = 0
-	 	non_paid_expenses = Expense.objects.filter(budget=self.kwargs.get('pk')).filter(cantidad_pendiente__gt=0)
+	 	non_paid_expenses = Expense.objects.filter(budget=self.kwargs.get('pk')).filter(cantidad_pendiente__gt=0).filter(tarjeta_credito=False).filter(skip=False)
 	 	for expense in expenses:
+	 		if expense.skip:
+	 			continue
+	 			
 	 		if expense.gasto == True:
  				if expense.tarjeta_credito == False:
 	 				egresos += expense.get_amount

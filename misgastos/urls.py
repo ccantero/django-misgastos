@@ -27,7 +27,7 @@ urlpatterns = [
     path('accounts/',include('django.contrib.auth.urls')),
     path('test/',views.TestPage.as_view(),name='test'),
     path('thanks/',views.ThanksPage.as_view(),name='thanks'),
-    path("presupuestos/", include("budgetsapp.urls", namespace="presupuesto")),
+    path("presupuestos/", include("budgetsapp.urls", namespace="presupuestos")),
     path("gastos/", include("expensesapp.urls", namespace="gastos")),
     path("categorias/", include("categoriesapp.urls", namespace="categorias")),
     path("coffees/", include("coffeeApp.urls", namespace="coffee")),

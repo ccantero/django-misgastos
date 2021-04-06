@@ -5,10 +5,10 @@
   <div class="col">
 		<h1>{{ budget.name|title }}</h1>
 		<h5>{{ budget.description }}</h5>
-    <a href="{% url 'presupuesto:update' pk=budget.pk %}" class='btn btn-md btn-fill btn-warning'>Modificar</a>
-    <a href="{% url 'presupuesto:delete' pk=budget.pk %}" class='btn btn-md btn-fill btn-danger'>Eliminar</a>
+    <a href="{% url 'presupuestos:update' pk=budget.pk %}" class='btn btn-md btn-fill btn-warning'>Modificar</a>
+    <a href="{% url 'presupuestos:delete' pk=budget.pk %}" class='btn btn-md btn-fill btn-danger'>Eliminar</a>
 	</div>
-    <div class="col my-auto">
+  <div class="col my-auto">
     <a href="{% url 'presupuestos:detail' pk=budget.pk %}">
       <input type="submit" class='btn btn-primary btn-large' value="Detalle">  
     </a>
@@ -139,7 +139,7 @@
         {% endfor %}
       </tbody>
     </table>
-    <a href="{% url 'presupuesto:create_expense' pk=budget.pk %}" class='btn btn-md btn-fill btn-primary'>
+    <a href="{% url 'presupuestos:create_expense' pk=budget.pk %}" class='btn btn-md btn-fill btn-primary'>
           Crear nuevo ingreso / gasto
         </a>
   </div>

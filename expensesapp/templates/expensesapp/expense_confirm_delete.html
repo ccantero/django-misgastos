@@ -6,6 +6,7 @@
 	<form method="POST">
 		{% csrf_token %}
 		<input type="submit" class="btn btn-danger btn-large" value="Confirm Delete">
+		<input type="hidden" name="next" value="{% url 'presupuestos:detail' pk=expense.budget.pk %}">
 		<a class='btn btn-info btn-large' href="{% url 'presupuestos:detail' pk=expense.budget.pk %}">Cancel</a>
 	</form>
 

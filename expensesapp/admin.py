@@ -6,6 +6,6 @@ from expensesapp import models
 
 class ExpenseAdmin(admin.ModelAdmin):
     list_display = ('name', 'amount', 'cantidad_total', 'cantidad_pendiente', 
-    				'gasto', 'tarjeta_credito')
+    				'gasto', 'tarjeta_credito', 'skip')
 
 admin.site.register(models.Expense, ExpenseAdmin)

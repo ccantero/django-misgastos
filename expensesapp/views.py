@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
-from django.http import HttpResponse
-from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 
 from django.contrib import messages
@@ -100,8 +100,17 @@ class DeleteExpense(LoginRequiredMixin,UserPassesTestMixin,generic.DeleteView):
 		queryset = super().get_queryset()
 		return queryset.filter(pk=self.kwargs.get('pk'))
 
+	# TODO: Fix this! 20210329
+	def get_success_url__(self):
+		next_url = self.request.POST.get('next', 'home')
+		print(next_url)
+		return HttpResponseRedirect(next_url)
+		#return reverse_lazy(next_url)
+		#return reverse(next_url)
+
 	def delete(self,*args,**kwargs):
-		messages.success(self.request,'Post Deleted')
+		#messages.success(self.request,'Post Deleted')
+
 		return super().delete(*args,**kwargs)
 
 import time
