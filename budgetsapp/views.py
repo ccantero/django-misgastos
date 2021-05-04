@@ -55,17 +55,30 @@ class CreateBudget(LoginRequiredMixin,generic.CreateView):
 
 		k, previous_budget = BUDGETS_CHOICES[choice]
 		previous_budget_name = previous_budget.name
-		listado_expenses = Expense.objects.filter(budget__name__iexact=previous_budget_name)
+		budgets_list = Budget.objects.filter(user__username__iexact=self.request.user.username).filter(name__iexact=previous_budget_name)
+		mybudget = budgets_list[0]
+
+		#listado_expenses = Expense.objects.filter(budget__name__iexact=previous_budget_name)
+		listado_expenses = Expense.objects.filter(budget__pk__exact=mybudget.pk)
+
 		for expense in listado_expenses:
 			new_expense = Expense()
 			new_expense.category_id = expense.category_id
 			new_expense.name = expense.name
 			new_expense.amount = expense.amount
+			new_expense.tarjeta_credito = expense.tarjeta_credito
 			new_expense.cantidad_total = expense.cantidad_total
 			new_expense.cantidad_pendiente = expense.cantidad_total
-			new_expense.gasto = expense.gasto
-			new_expense.tarjeta_credito = expense.tarjeta_credito
 			new_expense.skip = False
+			if new_expense.tarjeta_credito:
+				if expense.cantidad_total == 1:
+					new_expense.skip = True
+				elif expense.cantidad_pendiente > 0:
+					new_expense.cantidad_pendiente = expense.cantidad_pendiente - 1 
+				elif expense.cantidad_total > 1:
+					continue
+
+			new_expense.gasto = expense.gasto
 			new_expense.budget = self.object
 			new_expense.save()
 
@@ -149,7 +162,10 @@ class BudgetDetail(LoginRequiredMixin, UserPassesTestMixin, generic.DetailView):
 	 			if expense.tarjeta_credito == False:
 	 				egresos += expense.pending_amount
 	 			else:
-	 				tarjeta_credito += expense.amount
+	 				if expense.is_paid:
+	 					tarjeta_credito += round(expense.amount)
+	 				else:
+	 					tarjeta_credito += expense.pending_amount
 	 		else:
 	 			ingresos += expense.amount
 
