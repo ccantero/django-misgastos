@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 import os
 import json
@@ -23,7 +23,13 @@ def listener(request):
 		t_data = json.loads(request.body)
 		t_message = t_data["message"]
 		t_chat = t_message["chat"]
-		return HttpResponse("You sent = " + str(t_message))
+
+		myTelegramMessage = TelegramMessage()
+		myTelegramMessage.message = t_message
+		myTelegramMessage.chat_id = t_chat
+		myTelegramMessage.save()
+		
+		return JsonResponse({"ok": "POST request processed"}) 
 
 
 def send_message(message, chat_id):
