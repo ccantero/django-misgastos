@@ -7,6 +7,8 @@ import json
 
 # Create your views here.
 
+from telegramapi.models import TelegramMessage
+
 
 TELEGRAM_URL = "https://api.telegram.org/bot"
 TUTORIAL_BOT_TOKEN = os.getenv("TUTORIAL_BOT_TOKEN", "error_token")
