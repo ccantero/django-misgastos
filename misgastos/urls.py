@@ -31,4 +31,5 @@ urlpatterns = [
     path("gastos/", include("expensesapp.urls", namespace="gastos")),
     path("categorias/", include("categoriesapp.urls", namespace="categorias")),
     path("coffees/", include("coffeeApp.urls", namespace="coffee")),
+    path("telegramapi/", include("telegramapi.urls", namespace="telegramapi")),
 ]
