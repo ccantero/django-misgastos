@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 import os
 import json
@@ -10,7 +11,7 @@ import json
 TELEGRAM_URL = "https://api.telegram.org/bot"
 TUTORIAL_BOT_TOKEN = os.getenv("TUTORIAL_BOT_TOKEN", "error_token")
 
-
+@csrf_exempt
 def listener(request):
 
 	if TUTORIAL_BOT_TOKEN == 'error_token':
