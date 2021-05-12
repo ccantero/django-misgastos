@@ -4,6 +4,6 @@ from telegramapi import models
 
 # Register your models here.
 class TelegramMessageAdmin(admin.ModelAdmin):
-    list_display = ('message', 'chat_id')
+    list_display = ('message_id', 'chat_id', 'from_username', 'message', 'create_date')
 
 admin.site.register(models.TelegramMessage, TelegramMessageAdmin)

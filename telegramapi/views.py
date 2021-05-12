@@ -25,11 +25,21 @@ def listener(request):
 	if request.method == 'POST':
 		t_data = json.loads(request.body)
 		t_message = t_data["message"]
+		
+		t_message_text = t_message["text"]
+		message_id = t_message["id"]
+		
 		t_chat = t_message["chat"]
+		t_from = t_message["from"]
+
+		chat_id = t_chat['id']
+		username = t_from['username']
 
 		myTelegramMessage = TelegramMessage()
-		myTelegramMessage.message = t_message
-		myTelegramMessage.chat_id = t_chat
+		myTelegramMessage.message = t_message_text
+		myTelegramMessage.message_id = message_id
+		myTelegramMessage.from_username = username
+		myTelegramMessage.chat_id = chat_id
 		myTelegramMessage.save()
 		
 		return JsonResponse({"ok": "POST request processed"}) 
