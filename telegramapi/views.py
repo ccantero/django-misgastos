@@ -27,7 +27,7 @@ def listener(request):
 		t_message = t_data["message"]
 		
 		t_message_text = t_message["text"]
-		message_id = t_message["id"]
+		message_id = t_message["message_id"]
 		
 		t_chat = t_message["chat"]
 		t_from = t_message["from"]
