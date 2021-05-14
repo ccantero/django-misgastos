@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 import os
 import json
+import requests
 
 # Create your views here.
 
