@@ -44,6 +44,13 @@ def listener(request):
 		
 		return JsonResponse({"ok": "POST request processed"}) 
 
+@csrf_exempt
+def test_speaker(request, chat_id):
+	if request.method == 'GET':
+		send_message("This is a test message", chat_id)
+	
+	return HttpResponse("You are testing speaker!")
+
 
 def send_message(message, chat_id):
     data = {
@@ -53,7 +60,7 @@ def send_message(message, chat_id):
     }
     response = requests.post(
         f"{TELEGRAM_URL}{TUTORIAL_BOT_TOKEN}/sendMessage", data=data
-    )	
+    )
 
 
 # def post(self, request, *args, **kwargs):

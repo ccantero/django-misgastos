@@ -5,5 +5,6 @@ from telegramapi import views
 app_name = 'telegramapi'
 
 urlpatterns = [
-	path('listener/',views.listener,name='listener')
+	path('listener/',views.listener,name='listener'),
+	path('test_speaker/<int:chatid>',views.test_speaker,name='test_speaker'),
 ]
