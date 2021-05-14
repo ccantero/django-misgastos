@@ -46,6 +46,9 @@ def listener(request):
 
 @csrf_exempt
 def test_speaker(request, chat_id):
+	if TUTORIAL_BOT_TOKEN == 'error_token':
+		return HttpResponse("There is not TUTORIAL_BOT_TOKEN")
+
 	if request.method == 'GET':
 		send_message("This is a test message", chat_id)
 	

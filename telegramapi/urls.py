@@ -6,5 +6,5 @@ app_name = 'telegramapi'
 
 urlpatterns = [
 	path('listener/',views.listener,name='listener'),
-	path('test_speaker/<int:chatid>',views.test_speaker,name='test_speaker'),
+	path('test_speaker/<int:chat_id>/',views.test_speaker,name='test_speaker'),
 ]
