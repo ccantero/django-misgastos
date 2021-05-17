@@ -43,6 +43,10 @@ def listener(request):
 		myTelegramMessage.chat_id = chat_id
 		myTelegramMessage.save()
 		
+		if t_message_text == "/start":
+			send_message("Hi " + str(username), chat_id)
+
+
 		return JsonResponse({"ok": "POST request processed"}) 
 
 @csrf_exempt
