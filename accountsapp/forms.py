@@ -1,6 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
+from django import forms
+from accountsapp.models import Profile
+
 class UserCreateForm(UserCreationForm):
 
 	class Meta:
@@ -23,3 +26,14 @@ class UserCreateForm(UserCreationForm):
 		self.fields['password2'].label = 'Confirmar contraseña'
 
 
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('telegram_user', )
+        
+    def __init__(self,*args,**kwargs):
+        self.user = kwargs.pop('user')  # To get request.user. Do not use kwargs.pop('user', None) due to potential security hole
+        super().__init__(*args, **kwargs)
+        self.fields['telegram_user'].label = 'Telegram UserName'
+        
+	
