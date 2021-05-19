@@ -46,14 +46,14 @@ def listener(request):
 		
 		if t_message_text == "/start":
 			send_message("Hi " + str(username), chat_id)
-			list_of_profiles = Profile.Budget.objects.filter(telegram_username__iexact=username)
+			list_of_profiles = Profile.objects.filter(telegram_username__iexact=username)
 			if list_of_profiles == 0:
 				send_message("Seems you have not yet associated your misgastos account with this Telegram profile", chat_id)
 			else:
 				send_message("What do you want to do my friend?", chat_id)
 		else:
 			send_message("Sorry " + str(username) + "!", chat_id)
-			send_message("My answer are limited. Please ask the right questions." + str(username) + "!", chat_id)
+			send_message("My answer are limited. Please ask the right questions.", chat_id)
 
 		return JsonResponse({"ok": "POST request processed"}) 
 
