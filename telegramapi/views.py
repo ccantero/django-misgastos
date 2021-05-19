@@ -52,8 +52,8 @@ def listener(request):
 			else:
 				send_message("What do you want to do my friend?", chat_id)
 		else:
-			send_message("Sorry " + str(username)"!", chat_id)
-			send_message("My answer are limited. Please ask the right questions." + str(username)"!", chat_id)
+			send_message("Sorry " + str(username) + "!", chat_id)
+			send_message("My answer are limited. Please ask the right questions." + str(username) + "!", chat_id)
 
 		return JsonResponse({"ok": "POST request processed"}) 
 
