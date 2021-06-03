@@ -23,6 +23,12 @@
 		<a class='navbar-brand mynav' href="{% url 'home' %}">Maneja tu presupuesto</a>
 		<ul class='nav navbar-nav navbar-right ml-auto'>
 			{% if user.is_authenticated %}
+				{% if user.profile.telegram_user == "" %}
+					<li><a class="nav-link" href="{% url 'accountsapp:create_profile' %}" >Link Telegram </a></li>
+				{% else %}
+					<li><a class="nav-link">Linked with Telegram </a></li>
+				{% endif %}	
+
 				<li><a class="nav-link" href="{% url 'presupuestos:create' %}">Crear</a></li>
 				<li><a class="nav-link" href="{% url 'presupuestos:all' %}">Mis presupuestos</a></li>
 				<li><a class="nav-link" href="{% url 'accountsapp:change_password' %}" >Cambiar password</a></li>

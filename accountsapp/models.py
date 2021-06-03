@@ -10,7 +10,8 @@ class User(auth.models.User,auth.models.PermissionsMixin):
 
 class Profile(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
-    telegram_user = models.CharField(max_length=255)		
+    telegram_user = models.CharField(max_length=255)
+    chat_id = models.CharField(max_length=255, default='')
 
     def get_absolute_url(self):
         return reverse('/')

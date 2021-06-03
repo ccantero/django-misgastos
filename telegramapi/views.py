@@ -51,6 +51,9 @@ def listener(request):
 				send_message("Seems you have not yet associated your misgastos account with this Telegram profile", chat_id)
 			else:
 				send_message("What do you want to do my friend?", chat_id)
+		elif t_message_text == "/getmyinvest":
+			send_message("Sorry " + str(username) + "!", chat_id)
+			send_message("<b>This functionality is not yet implemented", chat_id)
 		else:
 			send_message("Sorry " + str(username) + "!", chat_id)
 			send_message("My answer are limited. Please ask the right questions.", chat_id)
