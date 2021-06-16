@@ -1,0 +1,37 @@
+{% extends "budgetsapp/budget_base.html" %}
+
+{% block pregroup %}
+	<div class="col">
+		<div class="content">
+			{% if user.is_authenticated  %}
+				<h2>Hola {{user.username}}!</h2>
+			{% endif %}	
+			<h3>Mis Inversiones</h3>
+			{% if user.is_authenticated  %}
+				<a href="{% url 'inversiones:create' %}" class='btn btn-md btn-fill btn-warning'>
+					Crear nueva inversion
+				</a>
+			{% endif %}	
+		</div>	
+	</div>
+	
+{% endblock %}
+
+{% block postgroup %}
+	
+	<div class="col order-1">
+		<div class="list-budget">
+			{% if object_list.count == 0  %}
+				<h1>Todavia no tienes inversiones.</h1>
+			{% endif %}
+			{% for investment in object_list %}
+				<div class='list-group-item list-group-item-action'>
+					<p>{{ investment.name }}</p>
+					<p>{{ investment.create_date|date:"d M Y" }}</p>
+					<p>{{ investment.amount }}</p>
+				</div>
+			{% endfor %}
+		</div>	
+	</div>
+
+{% endblock %}
