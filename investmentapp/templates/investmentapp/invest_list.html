@@ -18,20 +18,51 @@
 {% endblock %}
 
 {% block postgroup %}
-	
-	<div class="col order-1">
-		<div class="list-budget">
-			{% if object_list.count == 0  %}
-				<h1>Todavia no tienes inversiones.</h1>
-			{% endif %}
-			{% for investment in object_list %}
-				<div class='list-group-item list-group-item-action'>
-					<p>{{ investment.name }}</p>
-					<p>{{ investment.create_date|date:"d M Y" }}</p>
-					<p>{{ investment.amount }}</p>
-				</div>
-			{% endfor %}
-		</div>	
-	</div>
+
 
 {% endblock %}
+
+
+{% block footer %} 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <div class="container-fluid">
+    <table class="table table-striped order-list">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Titulo</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Monto</th>
+          <th scope="col">Rate Inicial</th>
+          <th scope="col">Rate Actual</th>
+          <th align="center">Monto Inicial ( USD )</th>
+          <th align="center">Monto Actual ( USD )</th>
+          <th align="center">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+      	{% for investment in object_list %}
+      		<tr>
+      			<th scope="row">{{ forloop.counter }}</th>
+				<td>{{ investment.name }}</td>
+				<td>{{ investment.create_date|date:"d M Y" }}</td>
+				<td>{{ investment.amount }}</td>
+				<td>{{ investment.initial_rate }}</td>
+				<td>{{ investment.get_actual_rate }}</td>
+				<td>{{ investment.get_initial_amount }}</td>
+				<td>{{ investment.get_actual_amount }}</td>
+				<td>
+	                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+	                    {% if investment.get_actual_rate >  investment.initial_rate %}
+	                      <button type="button" class="btn btn-success btn-custom-class" disabled="true">Good!</button> 
+	                    {% else %}
+	                      <button type="button" class="btn btn-danger btn-custom-class" disabled="true">Bad!</button>
+	                    {% endif %}
+	                </div>
+              </td>
+			</tr>
+		{% endfor %}
+      </tbody>
+    </table>
+  </div>
+ {% endblock %}

@@ -26,4 +26,9 @@ class ListInvestment(LoginRequiredMixin,generic.ListView):
 		queryset = super().get_queryset()
 		# Fix for django.db.utils.ProgrammingError: can't adapt type 'SimpleLazyObject'
 		myuser = str(self.request.user)
-		return queryset.filter(user__username__iexact=myuser).order_by('name')		
+		return queryset.filter(user__username__iexact=myuser).order_by('name')
+
+	def get_context_data(self, **kwargs):
+	 	context = super().get_context_data(**kwargs)
+	 	#context['test'] = 'Test Cantero'
+	 	return context
