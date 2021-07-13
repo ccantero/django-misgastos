@@ -31,13 +31,16 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Titulo</th>
+          <th scope="col">Tipo</th>
           <th scope="col">Fecha</th>
           <th scope="col">Monto</th>
           <th scope="col">Rate Inicial</th>
           <th scope="col">Rate Actual</th>
           <th align="center">Monto Inicial ( USD )</th>
           <th align="center">Monto Actual ( USD )</th>
+          <th align="center">Monto Actual ( ARS )</th>
           <th align="center">Estado</th>
+          <th align="center">Delete</th>
         </tr>
       </thead>
       <tbody>
@@ -45,21 +48,29 @@
       		<tr>
       			<th scope="row">{{ forloop.counter }}</th>
 				<td>{{ investment.name }}</td>
+        <td>{{ investment.factor.name }}</td>
 				<td>{{ investment.create_date|date:"d M Y" }}</td>
 				<td>{{ investment.amount }}</td>
 				<td>{{ investment.initial_rate }}</td>
 				<td>{{ investment.get_actual_rate }}</td>
 				<td>{{ investment.get_initial_amount }}</td>
 				<td>{{ investment.get_actual_amount }}</td>
+        <td>{{ investment.get_actual_amount_ars }}</td>
 				<td>
-	                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-	                    {% if investment.get_actual_rate >  investment.initial_rate %}
-	                      <button type="button" class="btn btn-success btn-custom-class" disabled="true">Good!</button> 
-	                    {% else %}
-	                      <button type="button" class="btn btn-danger btn-custom-class" disabled="true">Bad!</button>
-	                    {% endif %}
-	                </div>
-              </td>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                {% if investment.get_actual_rate >=  investment.initial_rate %}
+                  <button type="button" class="btn btn-success btn-custom-class" disabled="true">Good!</button> 
+                {% else %}
+                  <button type="button" class="btn btn-danger btn-custom-class" disabled="true">Bad!</button>
+                {% endif %}
+            </div>
+        </td>
+        <td align="left">
+          <a href="{% url 'inversiones:delete' pk=investment.pk %}">
+            <i class='far fa-trash-alt' alt="Eliminar"></i>
+          </a>
+          
+        </td>
 			</tr>
 		{% endfor %}
       </tbody>
