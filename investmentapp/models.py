@@ -77,19 +77,25 @@ class Invest(models.Model):
 
 	@property
 	def get_actual_amount(self):
-		return round(self.get_actual_rate * self.amount,2)
+		if self.factor.name == 'ARS':
+			return round(self.amount / self.get_actual_rate,2)
+
+		return round(self.get_actual_rate * self.amount,2)		
 
 	@property
 	def get_actual_amount_ars(self):
-		list_of_conversion_objs = Conversion.objects.filter(name__iexact="ARS")
-		ars_conversion_obj = list_of_conversion_objs[0]
-		old_quote = ars_conversion_obj.last_quote
-		ars_conversion_obj.update_quote()
-		if ars_conversion_obj.last_quote != old_quote:
-			print('Saving last_quote - ARS')
-			ars_conversion_obj.save()
+		if self.factor.name != 'ARS':
+			list_of_conversion_objs = Conversion.objects.filter(name__iexact="ARS")
+			ars_conversion_obj = list_of_conversion_objs[0]
+			old_quote = ars_conversion_obj.last_quote
+			ars_conversion_obj.update_quote()
+			if ars_conversion_obj.last_quote != old_quote:
+				print('Saving last_quote - ARS')
+				ars_conversion_obj.save()
 
-		return round(ars_conversion_obj.last_quote * self.get_actual_rate * self.amount,2)
+			return round(ars_conversion_obj.last_quote * self.get_actual_rate * self.amount,2)
+
+		return round(self.amount,2)
 
 
 	@property

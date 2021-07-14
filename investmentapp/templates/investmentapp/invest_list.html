@@ -19,6 +19,54 @@
 
 {% block postgroup %}
 
+<div class="col order-1">
+  <div class="alert alert-success" id="amount_usd" role="alert">
+    USD: {{ amount_usd }}
+  </div>
+  <div class="alert alert-success" id="amount_ars" role="alert">
+      ARS: {{ amount_ars }}
+  </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+      function updateCounters(){
+        var ingresos = {{ amount_usd }};
+        var ingresos_string = ingresos.toString();
+        var i = 0;
+        var factor = ingresos / ingresos_string.length / 10 ;
+        
+        refreshId_ingresos = setInterval(function(){ 
+          i = i + factor;
+          if(i < ingresos) {
+            $("#amount_usd").html("USD: " + i.toFixed(2)); 
+          }
+          else {
+            $("#amount_usd").html("USD: " + ingresos); 
+            clearInterval(refreshId_ingresos);
+          }
+        }, 1 * 50);
+
+
+        var egresos = {{ amount_ars }};
+        var egresos_string = egresos.toString();
+        var i = 0;
+        var factor_egresos = egresos / egresos_string.length / 10 ;
+        refreshId_egresos = setInterval(function(){ 
+          i = i + factor_egresos;
+          if(i < egresos) {
+            $("#amount_ars").html("ARS: " + i.toFixed(2)); 
+          }
+          else {
+            $("#amount_ars").html("ARS: " + egresos); 
+            clearInterval(refreshId_egresos);
+          }
+        }, 1 * 50)
+
+      }
+      updateCounters()
+
+  </script>
 
 {% endblock %}
 
@@ -40,39 +88,44 @@
           <th align="center">Monto Actual ( USD )</th>
           <th align="center">Monto Actual ( ARS )</th>
           <th align="center">Estado</th>
-          <th align="center">Delete</th>
+          <th align="center">Editar</th>
+          <th align="center">Borrar</th>
         </tr>
       </thead>
       <tbody>
-      	{% for investment in object_list %}
-      		<tr>
-      			<th scope="row">{{ forloop.counter }}</th>
-				<td>{{ investment.name }}</td>
-        <td>{{ investment.factor.name }}</td>
-				<td>{{ investment.create_date|date:"d M Y" }}</td>
-				<td>{{ investment.amount }}</td>
-				<td>{{ investment.initial_rate }}</td>
-				<td>{{ investment.get_actual_rate }}</td>
-				<td>{{ investment.get_initial_amount }}</td>
-				<td>{{ investment.get_actual_amount }}</td>
-        <td>{{ investment.get_actual_amount_ars }}</td>
-				<td>
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        {% for investment in object_list %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ investment.name }}</td>
+            <td>{{ investment.factor.name }}</td>
+            <td>{{ investment.create_date|date:"d M Y" }}</td>
+            <td>{{ investment.amount }}</td>
+            <td>{{ investment.initial_rate }}</td>
+            <td>{{ investment.get_actual_rate }}</td>
+            <td>{{ investment.get_initial_amount }}</td>
+            <td>{{ investment.get_actual_amount }}</td>
+            <td>{{ investment.get_actual_amount_ars }}</td>
+            <td>
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 {% if investment.get_actual_rate >=  investment.initial_rate %}
                   <button type="button" class="btn btn-success btn-custom-class" disabled="true">Good!</button> 
                 {% else %}
                   <button type="button" class="btn btn-danger btn-custom-class" disabled="true">Bad!</button>
                 {% endif %}
-            </div>
-        </td>
-        <td align="left">
-          <a href="{% url 'inversiones:delete' pk=investment.pk %}">
-            <i class='far fa-trash-alt' alt="Eliminar"></i>
-          </a>
-          
-        </td>
-			</tr>
-		{% endfor %}
+              </div>
+            </td>
+            <td align="left">
+              <a href="{% url 'inversiones:update' pk=investment.pk %}">
+                <i class='fas fa-pencil-alt' alt="Editar"></i>
+              </a>
+            </td>
+            <td align="left">
+              <a href="{% url 'inversiones:delete' pk=investment.pk %}">
+                <i class='far fa-trash-alt' alt="Eliminar"></i>
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>
