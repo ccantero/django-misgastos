@@ -25,7 +25,9 @@
 
 			<div class="col order-1">
 				<div class="container col-6">
-					<h4>Gastos más comunes</h4>
+					{% if common_expenses is not None %}
+						<h4>Gastos más comunes</h4>
+					{% endif %}
 					<br>
 					<div class="list-group">
 						{% for expense in common_expenses %}

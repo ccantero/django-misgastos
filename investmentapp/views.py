@@ -4,7 +4,7 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 
-from investmentapp.models import Invest
+from investmentapp.models import Invest, Conversion
 from investmentapp import forms
 
 # Create your views here.
@@ -96,4 +96,62 @@ class ListInvestment(LoginRequiredMixin,generic.ListView):
 
 	 	context['amount_ars'] = round(amount_ars,2)
 	 	context['amount_usd'] = round(amount_usd,2)
+
+	 	context['conversion_object_list'] = Conversion.objects.all()
+
 	 	return context
+
+from django.utils import timezone
+import requests
+from datetime import datetime
+from django.http import JsonResponse
+
+def update_investments(request):
+	if not request.user.is_authenticated:
+		return HttpResponseForbidden()
+
+	all_conversion_index = Conversion.objects.all()
+	now = timezone.now()
+
+	for conversion_obj in all_conversion_index:
+		last_update = conversion_obj.last_update
+		quote = conversion_obj.last_quote
+
+		dt_begin = datetime.fromtimestamp(last_update.timestamp())
+		dt_end = datetime.fromtimestamp(now.timestamp())
+
+		difference = dt_end - dt_begin
+		seconds = difference.total_seconds()
+
+		if seconds > 360:
+			if conversion_obj.name == 'BTC':
+				print("[update_investments]:: Calling the API alternative")
+				response = requests.get('https://api.alternative.me/v2/ticker/?convert=USD')
+				data = response.json()['data']
+
+				for key in data.keys():
+					if data[key]['name'] == 'Bitcoin':
+						quote = data[key]['quotes']['USD']['price']
+						break
+
+			if conversion_obj.name == 'ARS':
+				print("[update_investments]:: Calling the API dolarsi")
+				response = requests.get('https://www.dolarsi.com/api/api.php?type=valoresprincipales')
+				json_obj = response.json()
+
+				for obj in json_obj:
+					if obj['casa']['nombre'] == 'Dolar Blue':
+						data = obj['casa']
+						quote = float(data['compra'].replace(',','.'))
+						break
+
+
+			conversion_obj.last_quote = quote
+			conversion_obj.last_update = now
+			conversion_obj.save()
+
+	data = {
+			'ajax_answer': True
+	}
+
+	return JsonResponse(data)
