@@ -10,7 +10,7 @@ import requests
 
 from telegramapi.models import TelegramMessage
 
-from accountsapp.models import Profile
+from investmentapp.models import Invest
 
 TELEGRAM_URL = "https://api.telegram.org/bot"
 TUTORIAL_BOT_TOKEN = os.getenv("TUTORIAL_BOT_TOKEN", "error_token")
@@ -19,7 +19,25 @@ TUTORIAL_BOT_TOKEN = os.getenv("TUTORIAL_BOT_TOKEN", "error_token")
 def listener(request):
 
 	if TUTORIAL_BOT_TOKEN == 'error_token':
-		return HttpResponse("There is not TUTORIAL_BOT_TOKEN")
+		test_username = 'cristhian'
+		investments = Invest.objects.filter(user__username__iexact=test_username)
+		investments_list = list(investments)  # important: convert the QuerySet to a list object
+		header_list = ['name']
+		my_new_list = []
+		for obj in investments_list:
+			new_obj = dict()
+			for header in header_list:
+				#new_obj.append(obj[header])
+				new_obj[header] = obj.__getattribute__(header)
+
+			new_obj['actual_amount (USD)'] = obj.get_actual_amount
+			new_obj['actual_amount (ARS)'] = obj.get_actual_amount_ars
+			my_new_list.append(new_obj)
+
+		header_list.append('actual_amount (USD)')
+		header_list.append('actual_amount (ARS)')
+		
+		return HttpResponse(get_html_table(my_new_list, header_list))
 
 	if request.method == 'GET':
 		return HttpResponse("You are listening!")
@@ -47,7 +65,7 @@ def listener(request):
 		if t_message_text == "/start":
 			send_message("Hi " + str(username), chat_id)
 			list_of_profiles = Profile.objects.filter(telegram_user__iexact=username)
-			if list_of_profiles == 0:
+			if len(list_of_profiles) == 0:
 				send_message("Seems you have not yet associated your misgastos account with this Telegram profile", chat_id)
 			else:
 				send_message("What do you want to do my friend?", chat_id)
@@ -80,6 +98,25 @@ def send_message(message, chat_id):
     response = requests.post(
         f"{TELEGRAM_URL}{TUTORIAL_BOT_TOKEN}/sendMessage", data=data
     )
+
+def get_html_table(object_list, header_list):
+	html = '<table>'
+	html += '<tr>'
+	for field in header_list:
+		html += "<th>" + field + "</th>"
+
+	html += '</tr>'
+
+	for obj in object_list:
+		html += '<tr>'		
+		for field in header_list:
+			html += "<th>" + str(obj[field]) + "</th>"
+		html += '</tr>'		
+	html += '</table>'
+
+	return html
+
+
 
 
 # def post(self, request, *args, **kwargs):
