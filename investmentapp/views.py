@@ -67,7 +67,6 @@ class DeleteInvestment(LoginRequiredMixin,UserPassesTestMixin,generic.DeleteView
 	# TODO: Fix this! 20210329
 	def get_success_url__(self):
 		next_url = self.request.POST.get('next', 'home')
-		print(next_url)
 		return HttpResponseRedirect(next_url)
 
 	def delete(self,*args,**kwargs):
@@ -107,11 +106,12 @@ from datetime import datetime
 from django.http import JsonResponse
 
 def update_investments(request):
-	if not request.user.is_authenticated:
-		return HttpResponseForbidden()
+	#if not request.user.is_authenticated:
+	#	return HttpResponseForbidden()
 
 	all_conversion_index = Conversion.objects.all()
 	now = timezone.now()
+	api_dolar_si = False
 
 	for conversion_obj in all_conversion_index:
 		last_update = conversion_obj.last_update
@@ -125,7 +125,6 @@ def update_investments(request):
 
 		if seconds > 360:
 			if conversion_obj.name == 'BTC':
-				print("[update_investments]:: Calling the API alternative")
 				response = requests.get('https://api.alternative.me/v2/ticker/?convert=USD')
 				data = response.json()['data']
 
@@ -134,13 +133,36 @@ def update_investments(request):
 						quote = data[key]['quotes']['USD']['price']
 						break
 
-			if conversion_obj.name == 'ARS':
-				print("[update_investments]:: Calling the API dolarsi")
-				response = requests.get('https://www.dolarsi.com/api/api.php?type=valoresprincipales')
-				json_obj = response.json()
+			if conversion_obj.name == 'UVA':
+				response = requests.get('https://www.bancociudad.com.ar/institucional/herramientas/getCotizaciones')
+				data = response.json()
+				uva_value = data['data']['uva']['compra'].replace('$','').strip().replace(',','.')
+				quote = float(uva_value)
 
+			if conversion_obj.name == 'ARS':
+				if not api_dolar_si:
+					response = requests.get('https://www.dolarsi.com/api/api.php?type=valoresprincipales')
+					json_obj_dolarsi = response.json()
+					api_dolar_si = True
+
+				json_obj = json_obj_dolarsi
+				
 				for obj in json_obj:
 					if obj['casa']['nombre'] == 'Dolar Blue':
+						data = obj['casa']
+						quote = float(data['compra'].replace(',','.'))
+						break
+
+			if conversion_obj.name == 'ARS_USD_Oficial':
+				if not api_dolar_si:
+					response = requests.get('https://www.dolarsi.com/api/api.php?type=valoresprincipales')
+					json_obj_dolarsi = response.json()
+					api_dolar_si = True
+
+				json_obj = json_obj_dolarsi
+
+				for obj in json_obj:
+					if obj['casa']['nombre'] == 'Dolar Oficial':
 						data = obj['casa']
 						quote = float(data['compra'].replace(',','.'))
 						break

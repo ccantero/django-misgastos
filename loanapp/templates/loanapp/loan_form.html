@@ -1,0 +1,107 @@
+{% extends "budgetsapp/budget_base.html" %}
+{% load bootstrap3 %}
+
+
+{% block pregroup %}
+	<div class="col">
+		<div class="content">
+			<form action="" method="POST">
+				{% csrf_token %}
+				{% bootstrap_form form %}
+			</form>
+			</br>
+			<button onclick="getCalculations()" class='btn btn-primary btn-large'>Calcular</button>
+		</div>	
+	</div>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script>
+
+		function calculate() {
+			var cuota = $("#id_amount_cuota").val();
+			var uva_rate = {{ uva }};
+		}
+
+		function initialize() {
+			$("#id_amount_cuota").val({{ cuota }})
+			$("#id_amount_deuda").val({{ saldo }})
+		}
+
+		function getCalculations() {
+			var cuota = $("#id_amount_cuota").val();
+			var deuda = $("#id_amount_deuda").val();
+			var uva_rate = {{ uva }};
+			var usd_blue_rate = {{ USD_Blue }};
+			var usd_rate = {{ USD }};
+			var cuota_pesos = cuota * uva_rate
+			var deuda_usd_blue = deuda * uva_rate / usd_blue_rate
+			var deuda_usd = deuda * uva_rate / usd_rate
+
+			$("#amount_ars").html('ARS: ' + cuota_pesos.toFixed(2));
+			$("#amount_usd_blue").html('USD ( Blue ): ' + deuda_usd_blue.toFixed(2));
+			$("#amount_usd").html('USD ( Oficial ): ' + deuda_usd.toFixed(2));
+		}
+
+	    function updateInvestments(){
+	      $.ajax({
+	                  type:"POST",
+	                  url: "{% url 'inversiones:update_investments'%}",
+	                  data: {
+	                    csrfmiddlewaretoken: "{{ csrf_token }}"
+	                  },
+	                  dataType: 'json'
+	                });
+	    }
+	    initialize()
+	    updateInvestments()
+	    getCalculations()
+	</script>
+
+{% endblock %}
+
+{% block postgroup %}
+
+	<div class="col order-1">
+	  </br>
+	  <div class="alert alert-success" id="amount_ars" role="alert">
+	      ARS: 
+	  </div>
+	  </br>
+	  <div class="alert alert-success" id="amount_usd" role="alert">
+	    USD ( Oficial ): 
+	  </div>
+	  </br>
+	  <div class="alert alert-success" id="amount_usd_blue" role="alert">
+	    USD ( Blue ): 
+	  </div>
+	</div>
+
+ {% endblock %}
+
+{% block footer %} 
+ <div class="container-fluid">
+    <h1>Conversion</h1>
+    <table class="table table-striped order-list">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Última Actualización</th>
+          <th scope="col">Último Valor</th>
+          <th scope="col">Activo para elegir</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for conversion_obj in conversion_object_list %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ conversion_obj.name }}</td>
+            <td>{{ conversion_obj.last_update }}</td>
+            <td>{{ conversion_obj.last_quote }}</td>
+            <td>{{ conversion_obj.active_for_selection }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

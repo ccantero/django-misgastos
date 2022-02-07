@@ -20,7 +20,7 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark techfont mynav" id='navbar'>
-		<a class='navbar-brand mynav' href="{% url 'home' %}">Maneja tu presupuesto</a>
+		<a class='navbar-brand mynav' href="{% url 'home' %}">Cantero Solutions!</a>
 		<ul class='nav navbar-nav navbar-right ml-auto'>
 			{% if user.is_authenticated %}
 				{% if user.profile.telegram_user == "" %}
@@ -29,11 +29,13 @@
 					<li><a class="nav-link">Linked with Telegram </a></li>
 				{% endif %}	
 
+				<li><a class="nav-link" href="{% url 'loans:calculadora' %}">Caluladora UVA</a></li>
 				<li><a class="nav-link" href="{% url 'presupuestos:all' %}">Mis presupuestos</a></li>
 				<li><a class="nav-link" href="{% url 'inversiones:all' %}">Mis inversiones</a></li>
 				<li><a class="nav-link" href="{% url 'accountsapp:change_password' %}" >Cambiar password</a></li>
 				<li><a class="nav-link" href="{% url 'accountsapp:logout' %}" >Log Out</a></li>
 			{% else %}
+				<li><a class="nav-link" href="{% url 'loans:calculadora' %}">Caluladora UVA</a></li>
 				<li><a class="nav-link" href="{% url 'accountsapp:login' %}">Identificate</a></li>
 				<li><a class="nav-link" href="{% url 'accountsapp:signup' %}">Registrate</a></li>
 			{% endif %}

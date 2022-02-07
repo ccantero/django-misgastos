@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     'expensesapp',
     'coffeeApp',
     'telegramapi',
-    'investmentapp'
+    'investmentapp',
+    'loanapp'
 ]
 
 MIDDLEWARE = [
