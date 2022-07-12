@@ -136,7 +136,7 @@ def update_investments(request):
 			if conversion_obj.name == 'UVA':
 				response = requests.get('https://www.bancociudad.com.ar/institucional/herramientas/getCotizaciones')
 				data = response.json()
-				uva_value = data['data']['uva']['compra'].replace('$','').strip().replace(',','.')
+				uva_value = data['data']['Uva']['compra'].replace('$','').strip().replace(',','.')
 				quote = float(uva_value)
 
 			if conversion_obj.name == 'ARS':
