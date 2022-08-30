@@ -80,7 +80,7 @@ class ListInvestment(LoginRequiredMixin,generic.ListView):
 		queryset = super().get_queryset()
 		# Fix for django.db.utils.ProgrammingError: can't adapt type 'SimpleLazyObject'
 		myuser = str(self.request.user)
-		return queryset.filter(user__username__iexact=myuser).order_by('name')
+		return queryset.filter(user__username__iexact=myuser)
 
 	def get_context_data(self, **kwargs):
 	 	context = super().get_context_data(**kwargs)
@@ -97,8 +97,39 @@ class ListInvestment(LoginRequiredMixin,generic.ListView):
 	 	context['amount_usd'] = round(amount_usd,2)
 
 	 	context['conversion_object_list'] = Conversion.objects.all()
+	 	context['investments_object_list'] = investments
 
 	 	return context
+
+class ListInvestmentAfluenta(LoginRequiredMixin,generic.ListView):
+	model = Invest
+
+	def get_queryset(self):
+		queryset = super().get_queryset()
+		# Fix for django.db.utils.ProgrammingError: can't adapt type 'SimpleLazyObject'
+		myuser = str(self.request.user)
+		return queryset.filter(user__username__iexact=myuser).order_by('name')
+
+	def get_context_data(self, **kwargs):
+		afluenta_factor = 'BTC'
+		context = super().get_context_data(**kwargs)
+		myuser = str(self.request.user)
+		investments = Invest.objects.filter(user__username__iexact=myuser).filter(factor__name__iexact=afluenta_factor)
+		amount_usd = 0
+		amount_ars = 0
+		for investment in investments:
+			if investment.factor.name == afluenta_factor:
+				amount_ars += investment.get_actual_amount_ars
+				amount_usd += investment.get_actual_amount
+
+		context['amount_ars'] = round(amount_ars,2)
+		context['amount_usd'] = round(amount_usd,2)
+
+		context['conversion_object_list'] = Conversion.objects.all()
+		context['investments_object_list'] = investments
+
+		return context
+
 
 from django.utils import timezone
 import requests
